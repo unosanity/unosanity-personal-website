@@ -167,6 +167,35 @@
 
 /* hidden filter helper */
 .project-card[data-hidden="true"] { display: none; }
+
+/* ─── MOBILE ─── */
+@media (max-width: 600px) {
+  .page-header { padding: 22px 18px 0; }
+  .page-header h1 { font-size: clamp(48px, 14vw, 90px); letter-spacing: 2.5px; }
+  .page-header-meta { flex-wrap: wrap; gap: 6px; padding: 10px 0; }
+  .project-count { font-size: 9px; }
+
+  .filter-bar {
+    padding: 12px 18px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-bar .tag-pill { white-space: nowrap; flex-shrink: 0; }
+
+  .projects-grid { border-left: none; }
+  .project-card { padding: 18px 16px 16px; }
+  .project-card.featured { grid-column: span 1; }
+  .card-title { font-size: 24px; letter-spacing: 1.5px; }
+  .featured .card-title { font-size: clamp(28px, 8vw, 38px); }
+  .card-desc { font-size: 12px; line-height: 1.65; }
+}
+
+@media (max-width: 380px) {
+  .page-header h1 { font-size: 44px; letter-spacing: 2px; }
+}
 </style>
 </head>
 <body>

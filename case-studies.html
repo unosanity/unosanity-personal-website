@@ -321,6 +321,60 @@
 }
 
 .empty-modal-dismiss:hover { color: var(--ink); }
+
+/* ─── MOBILE ─── */
+@media (max-width: 600px) {
+  .page-header { padding: 22px 18px 0; }
+  .page-header-top { gap: 10px; }
+  .page-header h1 { font-size: clamp(44px, 13vw, 80px); letter-spacing: 2.5px; }
+  .page-header-desc {
+    font-size: 11px;
+    text-align: left;
+    max-width: 100%;
+    padding-bottom: 4px;
+  }
+  .page-header-meta { flex-wrap: wrap; gap: 6px; padding: 10px 0; }
+  .case-count { font-size: 9px; }
+
+  .filter-bar {
+    padding: 12px 18px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-bar .tag-pill { white-space: nowrap; flex-shrink: 0; }
+
+  .cases-grid { border-left: none; }
+  .case-card.featured { grid-column: span 1; }
+  .case-card.featured .case-cover { aspect-ratio: 16 / 8; }
+  .case-cover { aspect-ratio: 16 / 8; }
+  .cover-label { font-size: clamp(28px, 9vw, 44px); letter-spacing: 4px; }
+
+  .case-body { padding: 18px 16px 16px; gap: 8px; }
+  .case-top { gap: 8px; }
+  .case-title { font-size: 24px; letter-spacing: 1.5px; }
+  .case-desc { font-size: 12px; line-height: 1.65; }
+
+  .case-outcomes { gap: 14px; padding-top: 10px; }
+  .outcome-value { font-size: 22px; }
+
+  .empty-modal {
+    padding: 32px 24px 28px;
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .empty-modal-title { font-size: clamp(30px, 10vw, 48px); letter-spacing: 2.5px; }
+  .empty-modal-body { font-size: 12.5px; }
+  .empty-modal-links { width: 100%; }
+  .empty-modal-links a {
+    font-size: 10.5px;
+    padding: 10px 14px;
+    flex: 1;
+    text-align: center;
+    min-width: 130px;
+  }
+}
 </style>
 </head>
 <body>

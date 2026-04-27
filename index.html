@@ -17,7 +17,7 @@
 
 .hero-name {
   font-family: var(--display);
-  font-size: clamp(100px, 18vw, 240px);
+  font-size: clamp(72px, 18vw, 240px);
   line-height: 0.85;
   letter-spacing: -2px;
   color: var(--ink);
@@ -27,6 +27,7 @@
   /* slight askew */
   transform: rotate(-0.4deg);
   transform-origin: left bottom;
+  word-break: break-word;
 }
 
 .hero-handle-row {
@@ -36,6 +37,8 @@
   padding: 4px 24px 18px;
   border-top: 1px solid #bbb;
   margin-top: 8px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .hero-handle {
@@ -60,8 +63,9 @@
   border-bottom: 2px solid var(--ink);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 820px) {
   .content-grid { grid-template-columns: 1fr; }
+  .bio-col { border-right: none !important; border-bottom: 2px solid var(--ink); }
 }
 
 .bio-col {
@@ -235,6 +239,49 @@
 .note-title { font-size: 13px; }
 
 .note-tags { font-size: 9px; color: #aaa; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ─── MOBILE TUNING ─── */
+@media (max-width: 600px) {
+  .hero-name { padding: 16px 16px 0; letter-spacing: -1px; }
+  .hero-handle-row { padding: 4px 16px 14px; }
+  .hero-year { font-size: 9px; letter-spacing: 1.5px; }
+
+  .bio-col { padding: 24px 18px 30px; }
+  .status-col { padding: 22px 18px; }
+
+  .tagline-stack { margin-bottom: 24px; }
+  .tagline-item { letter-spacing: 2px; padding: 10px 0; }
+  .tagline-item span { margin-right: 8px; }
+
+  .bio-intro { font-size: 14px; line-height: 1.7; margin-bottom: 22px; }
+
+  .links-row { gap: 0; }
+  .ext-link {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 8px 14px 8px 0;
+    margin-right: 14px;
+  }
+
+  .recent-notes { padding: 18px 18px; }
+  .recent-notes-header h2 { font-size: 26px; letter-spacing: 2px; }
+  .recent-notes-header { flex-wrap: wrap; gap: 8px; }
+
+  .note-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 12px 0;
+  }
+  .note-date { font-size: 9px; }
+  .note-title { font-size: 13px; }
+
+  .now-playing { padding: 10px 12px; }
+}
+
+@media (max-width: 380px) {
+  .hero-name { font-size: clamp(60px, 17vw, 100px); }
+  .nav-logo { font-size: 20px; letter-spacing: 2px; padding: 0 12px; }
+}
 </style>
 </head>
 <body data-cc-id="cc-1" style="cursor: crosshair;">
@@ -325,15 +372,10 @@
       <a href="notes.html">All notes →</a>
     </div>
 
-    <a class="note-row" href="notes.html" style="display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid #ccc;color:#999;font-size:12px;font-style:italic;">
-      <svg width="20" height="20" viewBox="0 0 8 8" style="image-rendering:pixelated;flex-shrink:0;" fill="#bbb">
-        <rect x="2" y="1" width="1" height="2"/>
-        <rect x="5" y="1" width="1" height="2"/>
-        <rect x="1" y="5" width="1" height="1"/>
-        <rect x="2" y="6" width="4" height="1"/>
-        <rect x="6" y="5" width="1" height="1"/>
-      </svg>
-      no notes yet — come back soon-ish
+    <a class="note-row" href="notes.html">
+      <span class="note-date">Apr 27, 2026</span>
+      <span class="note-title">Prophet для контент-стратегії — покроковий посібник</span>
+      <span class="note-tags">#content · #python</span>
     </a>
 
   </section>

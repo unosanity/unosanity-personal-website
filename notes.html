@@ -248,6 +248,94 @@
 
 /* hidden */
 .note-entry[data-hidden="true"] { display: none; }
+
+/* ─── MOBILE ─── */
+@media (max-width: 600px) {
+  .page-header { padding: 22px 18px 0; }
+  .page-header h1 { font-size: clamp(48px, 16vw, 96px); letter-spacing: 2.5px; }
+  .page-header-sub { padding: 10px 0; gap: 6px; }
+  .note-count { font-size: 9px; }
+
+  .tag-bar {
+    padding: 12px 18px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tag-bar::-webkit-scrollbar { display: none; }
+  .tag-bar .tag-pill { white-space: nowrap; flex-shrink: 0; }
+
+  .note-entry-header {
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+    padding: 14px 18px;
+  }
+  .note-date-col {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    font-size: 9px;
+    color: #aaa;
+  }
+  .note-title-col {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 13.5px;
+    line-height: 1.35;
+  }
+  .note-meta-col {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+  .note-tags-inline { justify-content: flex-end; max-width: 110px; }
+  .note-read-time { font-size: 8.5px; }
+
+  .note-body {
+    padding: 24px 18px 28px;
+    max-width: 100%;
+  }
+  .note-body h1 { font-size: 32px; letter-spacing: 1.5px; }
+  .note-body h2 { font-size: 22px; letter-spacing: 1.5px; margin: 22px 0 8px; }
+  .note-body h3 { font-size: 12px; }
+  .note-body p { font-size: 13px; line-height: 1.75; }
+  .note-body li { font-size: 13px; line-height: 1.75; }
+  .note-body pre { padding: 14px 14px; font-size: 10.5px; }
+  .note-body pre code { font-size: 10.5px; line-height: 1.65; }
+  .note-body code { font-size: 10.5px; word-break: break-word; }
+  .note-body blockquote { padding-left: 14px; margin: 16px 0; }
+  .note-body table { font-size: 12px; }
+}
+
+@media (max-width: 380px) {
+  .note-entry-header { padding: 12px 14px; }
+  .note-body { padding: 20px 14px 24px; }
+  .note-body h1 { font-size: 28px; }
+}
+
+/* tables and code overflow */
+.note-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 12px;
+}
+.note-body th, .note-body td {
+  padding: 8px 10px;
+  border: 1px solid #c9c5b8;
+  text-align: left;
+}
+.note-body th {
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 10px;
+}
 </style>
 </head>
 <body>
@@ -292,15 +380,120 @@
    and paste it at the top of the array.
 ═══════════════════════════════════════════════════════ */
 const NOTES = [
-  /* ── add notes here when ready ──
   {
-    id: 'my-first-note',
-    date: '2026-05-01',
-    title: 'Note title',
-    tags: ['thoughts'],
-    body: `# Note title\n\nYour markdown here.`
+    id: 'prophet-content-strategy',
+    date: '2026-04-27',
+    title: 'Prophet для контент-стратегії — покроковий посібник',
+    tags: ['content', 'automation', 'python', 'guide'],
+    body: `# Prophet для контент-стратегії
+
+> Як прогнозувати трафік, ловити сезонні хвилі та планувати редакційний календар на рік уперед — без ступеня зі статистики.
+
+**Інструмент:** Prophet (Meta) · **Мова:** Python (5 рядків) · **Горизонт:** 365 днів уперед
+
+---
+
+## 01 — Експорт історичного трафіку
+
+Витягніть із **GA4 або внутрішньої бази** щоденні показники переглядів. Щоб модель змогла побачити сезонність, потрібно щонайменше **1–2 роки даних** — менше дасть шум замість сигналу.
+
+> **Ключове правило.** Не беріть увесь сайт одразу. Фільтруйте експорт за *конкретними кластерами* — освітні статті, транскрипти лекцій, окремі рубрики. Що чистіший сегмент, то корисніший прогноз. Загальна цифра по сайту змішує десятки різних динамік і приховує справжні патерни.
+
+---
+
+## 02 — Підготовка CSV
+
+Prophet жорсткий до формату — він не вгадає, що ви маєте на увазі. Відкрийте експортований CSV в Excel або Google Sheets і залиште тільки **дві колонки з точно такими назвами**:
+
+| ds         | y    |
+|------------|------|
+| 2024-01-01 | 1450 |
+| 2024-01-02 | 1620 |
+| 2024-01-03 | 1590 |
+
+- \`ds\` — дата у форматі YYYY-MM-DD
+- \`y\` — метрика (перегляди / унікальні)
+
+---
+
+## 03 — Налаштуйте робочий простір
+
+Якщо ви вже працюєте з Python — запустіть **локальний Jupyter Notebook**. Якщо ні, шлях найменшого опору — відкрийте **Google Colab** просто в браузері: жодних локальних залежностей, жодного «що знову не встановилось».
+
+У першій клітинці встановіть бібліотеки:
+
+\`\`\`
+!pip install prophet pandas matplotlib
+\`\`\`
+
+---
+
+## 04 — Натренуйте модель і запустіть прогноз
+
+Завантажте \`content_traffic.csv\` у середовище і запустіть код нижче. Це бойлерплейт — модель навчиться на історичних даних, екстраполює на **365 днів уперед** і одразу побудує дві ключові візуалізації.
+
+\`\`\`python
+import pandas as pd
+from prophet import Prophet
+import matplotlib.pyplot as plt
+
+# 1. Завантажуємо підготовлені дані
+df = pd.read_csv('content_traffic.csv')
+
+# 2. Ініціалізуємо й тренуємо модель
+m = Prophet(yearly_seasonality=True,
+            weekly_seasonality=True,
+            daily_seasonality=False)
+m.fit(df)
+
+# 3. Створюємо «вікно» на 365 днів уперед
+future = m.make_future_dataframe(periods=365)
+
+# 4. Прогнозуємо
+forecast = m.predict(future)
+
+# 5. Малюємо два ключові графіки
+m.plot(forecast); plt.show()
+m.plot_components(forecast); plt.show()
+\`\`\`
+
+> **Що означають прапорці.** \`yearly_seasonality=True\` — шукати річні цикли (новорічні спади, осінні піки навчання). \`weekly_seasonality=True\` — шукати тижневі цикли (вихідні vs будні). \`daily_seasonality=False\` — для денних агрегатів цикл всередині доби нерелевантний.
+
+---
+
+## 05 — Перетворіть прогноз на редакційні дії
+
+Скрипт згенерує **два набори візуалізацій**. Один показує майбутнє, другий — приховану структуру вашого трафіку. Ось як читати кожен і що з ним робити вже завтра вранці.
+
+### Fig 1 — Графік прогнозу
+
+Показує, куди рухається ваш трафік у наступному році з урахуванням усієї історії.
+
+- **Чорні точки** — фактичні історичні дані
+- **Синя лінія** — прогнозований трафік
+- **Блакитна зона** — довірчий інтервал, діапазон «нормальної» поведінки
+
+**→ Дія.** Якщо для конкретного кластера лінія починає **помітно падати в найближчі місяці** — заплануйте *редакційний рефреш* заздалегідь. Оновіть статистику, додайте свіжі тези, перепакуйте інтро. Стабілізуйте просідання, поки воно ще не настало.
+
+### Fig 2 — Графік компонентів
+
+Найцінніший вихід для стратега. Розкладає трафік на три прихованих шари:
+
+**T — Тренд.** Загальна траєкторія, без сезонного шуму. Якщо денна динаміка стабільна, але тренд вниз — контент *тихо* втрачає позиції в SEO.
+↳ Інвестуйте в нові кластери або глибокий рефреш.
+
+**W — Тижнева сезонність.** Які дні тижня ваші. Освітній контент часто пікує у **вівторок–середу** й завмирає на вихідних.
+↳ Не публікуйте флагман у п'ятницю.
+
+**Y — Річна сезонність.** Природні піки інтересу впродовж року. Бачите щорічний сплеск у жовтні? Це *математичний доказ*, що ви потрібні аудиторії саме тоді.
+↳ Брифуйте редакторів за 2 місяці до хвилі.
+
+---
+
+## Не забудьте — це не разова вправа
+
+**Перенавчайте модель щокварталу.** Алгоритми пошуку змінюються, ваша аудиторія росте, нові кластери додаються. Свіжі дані → точніший прогноз. Раз на 2–3 місяці прогоняйте оновлений CSV через ту саму модель — і коригуйте редакційний план відповідно до того, як зсуваються сезонні хвилі.`
   }
-  */
 ];
 
 /* ─── RENDER ─── */
