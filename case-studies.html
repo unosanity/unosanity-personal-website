@@ -521,7 +521,7 @@ document.querySelectorAll('[data-filter]').forEach(btn => {
     btn.classList.add('active');
     const f = btn.dataset.filter;
     document.querySelectorAll('.case-card').forEach(card => {
-      const show = f === 'all' || card.dataset.type.includes(f);
+      const show = f === 'all' || card.dataset.type.split(',').includes(f);
       card.setAttribute('data-hidden', show ? 'false' : 'true');
     });
     const visible = [...document.querySelectorAll('.case-card')].filter(c => c.dataset.hidden !== 'true').length;

@@ -411,8 +411,8 @@ Prophet is strict about format — it won't guess what you mean. Open the export
 | 2024-01-02 | 1620 |
 | 2024-01-03 | 1590 |
 
-- \\`ds\\` — date in YYYY-MM-DD format
-- \\`y\\` — the metric (pageviews / unique visitors)
+- \`ds\` — date in YYYY-MM-DD format
+- \`y\` — the metric (pageviews / unique visitors)
 
 ---
 
@@ -422,17 +422,17 @@ If you already work with Python — fire up a **local Jupyter Notebook**. If not
 
 In the first cell, install the libraries:
 
-\\`\\`\\`
+\`\`\`
 !pip install prophet pandas matplotlib
-\\`\\`\\`
+\`\`\`
 
 ---
 
 ## 04 — Train the model and run the forecast
 
-Upload \\`content_traffic.csv\\` to your environment and run the code below. This is boilerplate — the model trains on historical data, extrapolates **365 days ahead**, and immediately produces two key visualizations.
+Upload \`content_traffic.csv\` to your environment and run the code below. This is boilerplate — the model trains on historical data, extrapolates **365 days ahead**, and immediately produces two key visualizations.
 
-\\`\\`\\`python
+\`\`\`python
 import pandas as pd
 from prophet import Prophet
 import matplotlib.pyplot as plt
@@ -455,9 +455,9 @@ forecast = m.predict(future)
 # 5. Plot the two key charts
 m.plot(forecast); plt.show()
 m.plot_components(forecast); plt.show()
-\\`\\`\\`
+\`\`\`
 
-> **What the flags mean.** \\`yearly_seasonality=True\\` — look for yearly cycles (New Year dips, autumn learning peaks). \\`weekly_seasonality=True\\` — look for weekly cycles (weekends vs weekdays). \\`daily_seasonality=False\\` — for daily aggregates, intra-day cycles are irrelevant.
+> **What the flags mean.** \`yearly_seasonality=True\` — look for yearly cycles (New Year dips, autumn learning peaks). \`weekly_seasonality=True\` — look for weekly cycles (weekends vs weekdays). \`daily_seasonality=False\` — for daily aggregates, intra-day cycles are irrelevant.
 
 ---
 
@@ -492,7 +492,7 @@ The most valuable output for a strategist. Decomposes traffic into three hidden 
 
 ## Don't forget — this isn't a one-off exercise
 
-**Retrain the model every quarter.** Search algorithms shift, your audience grows, new clusters appear. Fresh data → sharper forecast. Every 2–3 months, run an updated CSV through the same model — and adjust the editorial plan to match how the seasonal waves are moving.\`
+**Retrain the model every quarter.** Search algorithms shift, your audience grows, new clusters appear. Fresh data → sharper forecast. Every 2–3 months, run an updated CSV through the same model — and adjust the editorial plan to match how the seasonal waves are moving.`
   }
 ];
 

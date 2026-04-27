@@ -166,6 +166,11 @@ a { color: inherit; text-decoration: none; }
 .type-essay    { color: var(--ink); border-color: var(--ink); }
 .type-experiment { color: var(--red); border-color: var(--red); }
 
+.type-automation  { color: #b87c00; border-color: #b87c00; }
+.type-content     { color: #2a9d2a; border-color: #2a9d2a; }
+.type-strategy    { color: #1a5fc8; border-color: #1a5fc8; }
+.type-development { color: #9c27b0; border-color: #9c27b0; }
+
 /* ─── PAGE TRANSITIONS ─── */
 main { animation: fadein 0.2s ease; }
 @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
