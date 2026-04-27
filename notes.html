@@ -383,27 +383,27 @@ const NOTES = [
   {
     id: 'prophet-content-strategy',
     date: '2026-04-27',
-    title: 'Prophet для контент-стратегії — покроковий посібник',
+    title: 'Prophet for Content Strategy — A Step-by-Step Guide',
     tags: ['content', 'automation', 'python', 'guide'],
-    body: `# Prophet для контент-стратегії
+    body: `# Prophet for Content Strategy
 
-> Як прогнозувати трафік, ловити сезонні хвилі та планувати редакційний календар на рік уперед — без ступеня зі статистики.
+> How to forecast traffic, catch seasonal waves, and plan an editorial calendar a year ahead — without a degree in statistics.
 
-**Інструмент:** Prophet (Meta) · **Мова:** Python (5 рядків) · **Горизонт:** 365 днів уперед
-
----
-
-## 01 — Експорт історичного трафіку
-
-Витягніть із **GA4 або внутрішньої бази** щоденні показники переглядів. Щоб модель змогла побачити сезонність, потрібно щонайменше **1–2 роки даних** — менше дасть шум замість сигналу.
-
-> **Ключове правило.** Не беріть увесь сайт одразу. Фільтруйте експорт за *конкретними кластерами* — освітні статті, транскрипти лекцій, окремі рубрики. Що чистіший сегмент, то корисніший прогноз. Загальна цифра по сайту змішує десятки різних динамік і приховує справжні патерни.
+**Tool:** Prophet (Meta) · **Language:** Python (5 lines) · **Horizon:** 365 days ahead
 
 ---
 
-## 02 — Підготовка CSV
+## 01 — Export historical traffic
 
-Prophet жорсткий до формату — він не вгадає, що ви маєте на увазі. Відкрийте експортований CSV в Excel або Google Sheets і залиште тільки **дві колонки з точно такими назвами**:
+Pull daily pageview metrics from **GA4 or your internal database**. For the model to detect seasonality, you need at least **1–2 years of data** — anything less gives noise instead of signal.
+
+> **Key rule.** Don't take the whole site at once. Filter the export by *specific clusters* — educational articles, lecture transcripts, individual sections. The cleaner the segment, the more useful the forecast. The site-wide number mixes dozens of different dynamics and hides the real patterns.
+
+---
+
+## 02 — Prepare the CSV
+
+Prophet is strict about format — it won't guess what you mean. Open the exported CSV in Excel or Google Sheets and leave only **two columns with these exact names**:
 
 | ds         | y    |
 |------------|------|
@@ -411,88 +411,88 @@ Prophet жорсткий до формату — він не вгадає, що 
 | 2024-01-02 | 1620 |
 | 2024-01-03 | 1590 |
 
-- \`ds\` — дата у форматі YYYY-MM-DD
-- \`y\` — метрика (перегляди / унікальні)
+- \\`ds\\` — date in YYYY-MM-DD format
+- \\`y\\` — the metric (pageviews / unique visitors)
 
 ---
 
-## 03 — Налаштуйте робочий простір
+## 03 — Set up your workspace
 
-Якщо ви вже працюєте з Python — запустіть **локальний Jupyter Notebook**. Якщо ні, шлях найменшого опору — відкрийте **Google Colab** просто в браузері: жодних локальних залежностей, жодного «що знову не встановилось».
+If you already work with Python — fire up a **local Jupyter Notebook**. If not, the path of least resistance is **Google Colab** right in the browser: no local dependencies, no "what hasn't installed this time."
 
-У першій клітинці встановіть бібліотеки:
+In the first cell, install the libraries:
 
-\`\`\`
+\\`\\`\\`
 !pip install prophet pandas matplotlib
-\`\`\`
+\\`\\`\\`
 
 ---
 
-## 04 — Натренуйте модель і запустіть прогноз
+## 04 — Train the model and run the forecast
 
-Завантажте \`content_traffic.csv\` у середовище і запустіть код нижче. Це бойлерплейт — модель навчиться на історичних даних, екстраполює на **365 днів уперед** і одразу побудує дві ключові візуалізації.
+Upload \\`content_traffic.csv\\` to your environment and run the code below. This is boilerplate — the model trains on historical data, extrapolates **365 days ahead**, and immediately produces two key visualizations.
 
-\`\`\`python
+\\`\\`\\`python
 import pandas as pd
 from prophet import Prophet
 import matplotlib.pyplot as plt
 
-# 1. Завантажуємо підготовлені дані
+# 1. Load the prepared data
 df = pd.read_csv('content_traffic.csv')
 
-# 2. Ініціалізуємо й тренуємо модель
+# 2. Initialize and train the model
 m = Prophet(yearly_seasonality=True,
             weekly_seasonality=True,
             daily_seasonality=False)
 m.fit(df)
 
-# 3. Створюємо «вікно» на 365 днів уперед
+# 3. Create a 365-day "window" into the future
 future = m.make_future_dataframe(periods=365)
 
-# 4. Прогнозуємо
+# 4. Forecast
 forecast = m.predict(future)
 
-# 5. Малюємо два ключові графіки
+# 5. Plot the two key charts
 m.plot(forecast); plt.show()
 m.plot_components(forecast); plt.show()
-\`\`\`
+\\`\\`\\`
 
-> **Що означають прапорці.** \`yearly_seasonality=True\` — шукати річні цикли (новорічні спади, осінні піки навчання). \`weekly_seasonality=True\` — шукати тижневі цикли (вихідні vs будні). \`daily_seasonality=False\` — для денних агрегатів цикл всередині доби нерелевантний.
-
----
-
-## 05 — Перетворіть прогноз на редакційні дії
-
-Скрипт згенерує **два набори візуалізацій**. Один показує майбутнє, другий — приховану структуру вашого трафіку. Ось як читати кожен і що з ним робити вже завтра вранці.
-
-### Fig 1 — Графік прогнозу
-
-Показує, куди рухається ваш трафік у наступному році з урахуванням усієї історії.
-
-- **Чорні точки** — фактичні історичні дані
-- **Синя лінія** — прогнозований трафік
-- **Блакитна зона** — довірчий інтервал, діапазон «нормальної» поведінки
-
-**→ Дія.** Якщо для конкретного кластера лінія починає **помітно падати в найближчі місяці** — заплануйте *редакційний рефреш* заздалегідь. Оновіть статистику, додайте свіжі тези, перепакуйте інтро. Стабілізуйте просідання, поки воно ще не настало.
-
-### Fig 2 — Графік компонентів
-
-Найцінніший вихід для стратега. Розкладає трафік на три прихованих шари:
-
-**T — Тренд.** Загальна траєкторія, без сезонного шуму. Якщо денна динаміка стабільна, але тренд вниз — контент *тихо* втрачає позиції в SEO.
-↳ Інвестуйте в нові кластери або глибокий рефреш.
-
-**W — Тижнева сезонність.** Які дні тижня ваші. Освітній контент часто пікує у **вівторок–середу** й завмирає на вихідних.
-↳ Не публікуйте флагман у п'ятницю.
-
-**Y — Річна сезонність.** Природні піки інтересу впродовж року. Бачите щорічний сплеск у жовтні? Це *математичний доказ*, що ви потрібні аудиторії саме тоді.
-↳ Брифуйте редакторів за 2 місяці до хвилі.
+> **What the flags mean.** \\`yearly_seasonality=True\\` — look for yearly cycles (New Year dips, autumn learning peaks). \\`weekly_seasonality=True\\` — look for weekly cycles (weekends vs weekdays). \\`daily_seasonality=False\\` — for daily aggregates, intra-day cycles are irrelevant.
 
 ---
 
-## Не забудьте — це не разова вправа
+## 05 — Turn the forecast into editorial action
 
-**Перенавчайте модель щокварталу.** Алгоритми пошуку змінюються, ваша аудиторія росте, нові кластери додаються. Свіжі дані → точніший прогноз. Раз на 2–3 місяці прогоняйте оновлений CSV через ту саму модель — і коригуйте редакційний план відповідно до того, як зсуваються сезонні хвилі.`
+The script generates **two sets of visualizations**. One shows the future, the other reveals the hidden structure of your traffic. Here's how to read each one and what to do with it tomorrow morning.
+
+### Fig 1 — Forecast plot
+
+Shows where your traffic is heading next year, accounting for all historical context.
+
+- **Black dots** — actual historical data
+- **Blue line** — forecasted traffic
+- **Light-blue band** — confidence interval, the range of "normal" behavior
+
+**→ Action.** If the line for a specific cluster starts to **drop noticeably in the coming months** — schedule an *editorial refresh* in advance. Update statistics, add fresh takes, repackage the intro. Stabilize the dip before it actually arrives.
+
+### Fig 2 — Components plot
+
+The most valuable output for a strategist. Decomposes traffic into three hidden layers:
+
+**T — Trend.** The overall trajectory, stripped of seasonal noise. If daily dynamics are stable but the trend points down — your content is *quietly* losing SEO ground.
+↳ Invest in new clusters or a deep refresh.
+
+**W — Weekly seasonality.** Which days of the week are yours. Educational content often peaks on **Tuesday–Wednesday** and goes quiet on weekends.
+↳ Don't ship your flagship on a Friday.
+
+**Y — Yearly seasonality.** Natural peaks of interest throughout the year. See an annual spike in October? That's *mathematical proof* the audience needs you exactly then.
+↳ Brief editors 2 months before the wave hits.
+
+---
+
+## Don't forget — this isn't a one-off exercise
+
+**Retrain the model every quarter.** Search algorithms shift, your audience grows, new clusters appear. Fresh data → sharper forecast. Every 2–3 months, run an updated CSV through the same model — and adjust the editorial plan to match how the seasonal waves are moving.\`
   }
 ];
 
