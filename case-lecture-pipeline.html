@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="tweaks-apply.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
 .article-shell {
   border-bottom: 3px solid var(--ink);
@@ -282,7 +283,7 @@ Each fragment goes into a tiered registry, ranked by how usable it is:
 
 Then a synthesis pass looks across transcripts: did three different lecturers all touch the same company from different angles? That combination is worth more than any single fragment alone.
 
-What comes out is a structured registry of every case-study gem buried in the archive, sorted by how usable it is, with cross-references for the combinable ones. Uncut gems, in a tray, labelled.
+What comes out is a structured registry of every case-study gem buried in the archive, sorted by how usable it is, with cross-references for the combinable ones. In the first pass, case-study fragments turned out to be present in around 10% of the corpus — more than expected, but most of it tier-three material that needed pairing or external verification to become usable. Uncut gems, in a tray, labelled.
 
 ## Stage 3 — Turn fragments into an article
 
@@ -298,9 +299,32 @@ The thing that surprised me is how much each stage hates being merged with the o
 
 Splitting the pipeline didn't just make the output better. It made the failure modes legible. When something goes wrong now, I know whether it failed at "what do we have," "what's worth mining," or "how do we draft." Three small problems are tractable. One big problem is just a vibe.
 
+First run: 4 case-study articles created, each from fragments that would have stayed buried in the archive. Not a revolution — just a pipeline that works, one cut at a time.
+
 The transcripts are no longer a graveyard. They're a quarry, and the quarry has a map.`;
 
-document.getElementById('article-body').innerHTML = marked.parse(article);
+mermaid.initialize({ startOnLoad: false, theme: 'base', themeVariables: { primaryColor: '#0f0f0f', textColor: '#0f0f0f', lineColor: '#0f0f0f', fontSize: '13px' } });
+
+const html = marked.parse(article);
+const container = document.getElementById('article-body');
+container.innerHTML = html;
+
+// Render mermaid blocks
+container.querySelectorAll('pre code.language-mermaid').forEach(async (block) => {
+  const definition = block.textContent;
+  const wrapper = document.createElement('pre');
+  wrapper.className = 'mermaid';
+  wrapper.style.background = 'var(--bg)';
+  wrapper.style.padding = '18px 20px';
+  wrapper.style.margin = '16px 0';
+  try {
+    const { svg } = await mermaid.render('mermaid-' + Math.random().toString(36).slice(2), definition);
+    wrapper.innerHTML = svg;
+    block.closest('pre').replaceWith(wrapper);
+  } catch (e) {
+    console.warn('Mermaid render failed:', e);
+  }
+});
 </script>
 <script src="pixel-trail.js"></script>
 <script>initPixelTrail({ pixelSize: 16, fadeDuration: 1200, color: '#0f0f0f', opacity: 0.9, gooStrength: 4 });</script>

@@ -40,7 +40,7 @@ function ResponsiveStyles() {
       /* ============ HEADER ============ */
       .pg-header {
         position: relative; z-index: 5;
-        padding: 32px 48px 0;
+        padding: 24px 48px 0;
         display: flex; justify-content: space-between; align-items: center;
         gap: 16px; flex-wrap: wrap;
         font-family: ui-monospace, "SF Mono", monospace;
@@ -73,31 +73,31 @@ function ResponsiveStyles() {
       /* ============ MAIN ============ */
       .pg-main {
         position: relative; z-index: 2;
-        min-height: 900px;
+        min-height: 0;
       }
 
-      .pg-hero { padding: 80px 48px 48px; max-width: 760px; }
+      .pg-hero { padding: 44px 48px 28px; max-width: 760px; }
       .pg-eyebrow {
         font-family: ui-monospace, "SF Mono", monospace;
         font-size: 11px; letter-spacing: 0.18em;
         text-transform: uppercase; color: ${dim};
-        margin-bottom: 28px;
+        margin-bottom: 14px;
       }
       .pg-h1 {
         font-family: "Fraunces", "Iowan Old Style", Georgia, serif;
-        font-weight: 300; font-size: 116px; line-height: 0.92;
+        font-weight: 300; font-size: 96px; line-height: 0.88;
         letter-spacing: -0.03em; margin: 0; color: ${paper};
       }
       .pg-h1 .pg-italic { font-style: italic; font-weight: 300; color: ${accent}; }
       .pg-body {
-        margin-top: 36px; font-size: 16px; line-height: 1.55;
+        margin-top: 20px; font-size: 16px; line-height: 1.5;
         color: ${dim}; max-width: 480px;
       }
 
       /* Wireframe panel — desktop: absolute right; mobile: in flow */
       .pg-panel {
-        position: absolute; top: 152px; right: 48px;
-        width: 580px; padding: 28px;
+        position: absolute; top: 132px; right: 48px;
+        width: 580px; padding: 18px;
         border: 1px solid ${dim}33;
       }
       .pg-corner { position: absolute; width: 14px; height: 14px; }
@@ -115,8 +115,8 @@ function ResponsiveStyles() {
       .pg-panel-head .pg-cards { color: ${accent}; }
 
       .pg-grid {
-        margin-top: 20px;
-        display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
+        margin-top: 10px;
+        display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
       }
       .pg-cell { position: relative; color: ${paper}; }
       .pg-cell-num {
@@ -132,23 +132,23 @@ function ResponsiveStyles() {
       }
 
       .pg-how {
-        margin-top: 18px; border-top: 1px solid ${dim}33; padding-top: 14px;
+        margin-top: 10px; border-top: 1px solid ${dim}33; padding-top: 8px;
       }
       .pg-how-label {
         font-family: ui-monospace, monospace; font-size: 10px;
         letter-spacing: 0.15em; text-transform: uppercase;
-        color: ${dim}; margin-bottom: 10px;
+        color: ${dim}; margin-bottom: 8px;
       }
       .pg-how-grid {
-        display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
         font-size: 11px; line-height: 1.4;
       }
       .pg-how-grid .pg-num { color: ${accent}; }
 
       /* ============ FOOTER ============ */
       .pg-footer {
-        position: absolute; bottom: 32px; left: 48px; right: 48px;
-        padding-top: 18px; border-top: 1px solid ${dim}33;
+        position: absolute; bottom: 16px; left: 48px; right: 48px;
+        padding-top: 12px; border-top: 1px solid ${dim}33;
         display: flex; justify-content: space-between; align-items: center;
         font-family: ui-monospace, monospace; font-size: 10px;
         letter-spacing: 0.16em; text-transform: uppercase; color: ${dim};
@@ -158,15 +158,15 @@ function ResponsiveStyles() {
       /* ============ TABLET ============ */
       @media (max-width: 1099px) {
         .pg-main { min-height: 0; }
-        .pg-hero { padding: 60px 36px 32px; max-width: none; }
-        .pg-h1 { font-size: clamp(72px, 9vw, 100px); }
+        .pg-hero { padding: 48px 36px 24px; max-width: none; }
+        .pg-h1 { font-size: clamp(68px, 9vw, 96px); }
         .pg-panel {
           position: relative; top: auto; right: auto;
-          width: auto; margin: 0 36px 48px;
+          width: auto; margin: 0 36px 36px;
         }
         .pg-footer {
           position: relative; bottom: auto; left: auto; right: auto;
-          margin: 0 36px 28px;
+          margin: 0 36px 20px;
         }
       }
 
