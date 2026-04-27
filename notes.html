@@ -493,6 +493,285 @@ The most valuable output for a strategist. Decomposes traffic into three hidden 
 ## Don't forget — this isn't a one-off exercise
 
 **Retrain the model every quarter.** Search algorithms shift, your audience grows, new clusters appear. Fresh data → sharper forecast. Every 2–3 months, run an updated CSV through the same model — and adjust the editorial plan to match how the seasonal waves are moving.`
+  },
+  {
+    id: 'desktop-control-plugin-creation',
+    date: '2026-04-27',
+    title: 'Desktop Control Plugin Creation',
+    tags: ['reference', 'software', 'AI', 'plugin'],
+    body: `# Desktop Control Plugin Creation
+
+This note documents the challenges, iterations, and lessons learned during the creation and refinement of the Hermes Desktop Control Plugin — a tool that allows AI agents to observe and interact with the macOS desktop through screenshots, mouse/keyboard automation, and visual annotation.
+
+## Overview
+
+The Desktop Control Plugin enables AI agents to:
+
+- **Observe** the desktop via screenshots (mss + Pillow)
+- **Annotate** screenshots with numbered markers for spatial reasoning
+- **Execute** desktop actions (click, type, hotkey, scroll) via PyAutoGUI
+- **Control workflow** through sequences with approval boundaries
+
+Live path: \`~/.hermes/plugins/desktop-control/\`
+GitHub: \`unosanity/hermes-desktop-control\`
+
+---
+
+## Phase 1: Initial Creation (April 2026)
+
+### Core Architecture Decisions
+
+The plugin was built as a Hermes backend plugin with these components:
+
+| Component | Purpose |
+|-----------|---------|
+| \`backend.py\` | Core screenshot capture, action execution, sequence state management |
+| \`api.py\` | Tool handler interface for Hermes integration |
+| \`schema.py\` | JSON Schema validation for tool inputs |
+| \`models.py\` | Pydantic models for type safety |
+| \`settings_schema.py\` | Plugin configuration schema |
+
+### Key Technical Choices
+
+- **mss** for screenshot capture (faster than PIL's ImageGrab on macOS)
+- **PyAutoGUI** for cross-platform mouse/keyboard automation
+- **Pillow** for image annotation (numbered markers, highlights, arrows)
+- **Pydantic v2** for runtime validation
+- **Purple top-bar indicator** for visual "Hekate in control" signaling
+
+### Initial Challenges
+
+1. **Screen Recording Permission Hell**
+   - macOS requires Screen Recording permission for mss
+   - Permission dialogs are modal and block automation
+   - False positives: permission check returns "denied" even when granted (macOS quirk)
+   - **Solution**: Retry logic with explicit user instructions for manual grant
+
+2. **Approval Boundary Design**
+   - Needed meaningful approval gates without being oppressive
+   - 5-phase boundary system emerged:
+     - Navigation (observe free)
+     - Draft preparation (observe + annotate)
+     - Commit actions (click/type — require approval)
+     - Unexpected state (hard stop, re-approve)
+     - Clipboard actions (explicit only)
+
+3. **Frame Grounding**
+   - Every action must reference a specific observed frame
+   - Prevents "blind" actions on stale screenshots
+   - \`derived_from_frame_id\` field auto-injected from last observe
+
+---
+
+## Phase 2: Model Comprehension Crisis (April 24–25, 2026)
+
+### The Problem
+
+"Dumber" models (non-frontier LLMs) consistently failed to use the plugin correctly:
+
+- Skipped the \`observe\` step before executing actions
+- Used wrong syntax (flat params instead of nested \`action\` object)
+- Forgot frame grounding requirements
+- Misunderstood the workflow sequence
+
+### Root Cause Analysis
+
+The bundled skill (\`desktop-control-plugin-v1\`) existed but models didn't automatically realize they should load it. The JSON schema alone wasn't sufficient for weaker models to infer correct usage patterns.
+
+### The 70-Issue Diagnostic
+
+A comprehensive diagnostic report identified:
+
+| Category | Issues | Examples |
+|----------|--------|----------|
+| Schema | 15 | Missing conditional required fields, loose \`additionalProperties\` |
+| API | 12 | Poor error messages, no recovery hints, misplaced field detection |
+| Skill | 18 | Dense structure, missing examples, no retry guidance |
+| Runtime | 14 | Phantom settings not enforced, stale grounding allowed |
+| Security | 6 | Clipboard leakage risk, approval bypass vectors |
+| Model cognition | 5 | No workflow scaffolding, missing suggest operation |
+
+### Cross-Model Review Process
+
+Used adversarial workflow:
+
+1. Kimi (kimi-for-coding) wrote the diagnostic
+2. GLM-5.1 reviewed for gaps
+3. Findings merged into comprehensive remediation plan
+
+---
+
+## Phase 3: Comprehensive Fix Implementation (April 25–27, 2026)
+
+### Schema Hardening
+
+\`\`\`python
+# Before: Loose schema, weak validation
+{
+  "type": "object",
+  "properties": { "operation": {"type": "string"}, ... }
+}
+
+# After: Conditional required fields via anyOf
+{
+  "anyOf": [
+    {
+      "properties": {
+        "operation": {"const": "click"},
+        "action": {
+          "type": "object",
+          "properties": {"x": {"type": "integer"}, "y": {"type": "integer"}},
+          "required": ["x", "y"]
+        }
+      },
+      "required": ["operation", "action"]
+    },
+    ...
+  ],
+  "additionalProperties": false
+}
+\`\`\`
+
+### API Improvements
+
+1. **Annotation validation** — Reject malformed annotations (e.g., string instead of object)
+2. **Misplaced field warnings** — Detect when model sends \`x\`/\`y\` outside \`action\` object
+3. **Structured errors** — Error codes + recovery hints instead of opaque failures
+4. **Dry run mode** — Validate without side effects for safe testing
+
+### Backend Hardening
+
+1. **Auto-inject frame_id** — If \`derived_from_frame_id\` omitted, inject from last observe
+2. **Phantom settings enforcement**:
+   - \`max_text_input_length\` — Limit typing length
+   - \`max_frame_age_ms\` — Reject stale grounding
+   - \`max_actions_per_sequence\` — Prevent runaway sequences
+   - \`action_counter\` — Track usage per sequence
+   - \`last_observed_at\` — Timestamp for staleness checks
+
+### Skill Restructuring
+
+Split into two clear sections:
+
+- **For AI using this tool** — Operation reference, error recovery, safety rules
+- **For plugin developers** — Architecture, design principles
+
+Added:
+
+- Explicit retry instructions for permission false-positives
+- Code examples for each operation type
+- Workflow diagram (observe → annotate → execute)
+
+### New \`suggest\` Operation
+
+Added to help weaker models:
+
+\`\`\`python
+{
+  "operation": "suggest",
+  "topic": "next_step",  # or "workflow", "error_recovery"
+  "hint": "User wants to open Chrome"
+}
+\`\`\`
+
+Returns context-aware next-action proposals with examples.
+
+---
+
+## Phase 4: Automatic Skill Injection (April 27, 2026)
+
+### The Breakthrough
+
+Even with improved skill, models still didn't know to load it. Implemented \`pre_tool_call\` hook:
+
+\`\`\`python
+# In __init__.py
+@pre_tool_call(tool="computer_use")
+def inject_skill_on_first_use(ctx):
+    if not ctx.session.get("desktop_skill_injected"):
+        ctx.session["desktop_skill_injected"] = True
+        skill_content = load_skill("desktop-control-plugin-v1")
+        return {
+            "block": True,
+            "message": f"Desktop control skill loaded. Read it, then retry.\\n\\n{skill_content}"
+        }
+\`\`\`
+
+On first \`computer_use\` call:
+
+1. Execution blocks
+2. Full skill content injected into context
+3. Model must read skill and retry with correct syntax
+
+This eliminated the "models don't know about the skill" problem entirely.
+
+---
+
+## Key Lessons Learned
+
+### 1. Schema Alone Is Insufficient
+
+JSON Schema validates syntax but doesn't teach semantics. Weak models need:
+
+- Explicit workflow examples
+- Step-by-step operation sequences
+- Error recovery instructions
+
+### 2. Auto-Injection Beats Documentation
+
+Don't rely on models to discover skills. Inject them automatically on first use.
+
+### 3. Defensive Design for Weak Models
+
+Assume the calling model is dumb:
+
+- Auto-correct missing fields (frame_id injection)
+- Detect and warn on common mistakes (misplaced fields)
+- Provide \`suggest\` operation as training wheels
+
+### 4. Permission Handling Is Fraught
+
+macOS permissions are flaky:
+
+- Check can return "denied" when actually granted
+- Always provide retry instructions
+- Never assume first failure is final
+
+### 5. Approval Boundaries Must Be Explicit
+
+Don't infer approval from context. Explicit states:
+
+- \`approval_source: direct_user_instruction\` — User said "do this"
+- \`approval_source: hermes_approval_ui\` — User clicked Allow
+- \`approval_source: null\` — No approval, action blocked
+
+### 6. Phantom Settings Are Dangerous
+
+Settings defined but not enforced create false security:
+
+- Every setting needs runtime enforcement
+- Every enforcement needs tests
+- Audit settings vs. implementation regularly
+
+---
+
+## Current State (April 27, 2026)
+
+| Component | Status |
+|-----------|--------|
+| Schema | Hardened with \`anyOf\` conditionals, \`additionalProperties: false\` |
+| API | Validation, error hints, misplaced-field detection, dry run |
+| Backend | Auto frame_id injection, phantom settings enforcement |
+| Skill | Restructured, examples, retry guidance, permission handling |
+| Auto-injection | \`pre_tool_call\` hook implemented and tested |
+| Tests | 252 tests covering schema, API, backend, security |
+
+### Remaining Work
+
+- Finalize \`max_actions_per_sequence\` enforcement
+- Increment \`action_counter\` after each execution
+- Update \`last_observed_at\` on observe operations
+- Comprehensive pytest regression run`
   }
 ];
 

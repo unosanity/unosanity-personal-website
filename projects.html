@@ -248,6 +248,15 @@ const PROJECTS = [
     link: "https://github.com/unosanity/hermes-desktop-control",
     featured: true,
     dark: true
+  },
+  {
+    title: "Prophetgram",
+    type: "app",
+    description: "A goal-driven content strategy app for Instagram creators. You upload your data and set a goal — Prophetgram builds a 12-week calendar from forecasts of your own posts, not vibes. Powered by Meta's Prophet prediction engine. Coming soon.",
+    tags: ["app", "AI", "content", "prophet"],
+    link: "Prophetgram.html",
+    featured: false,
+    dark: true
   }
 ];
 
@@ -255,7 +264,7 @@ function buildCard(p) {
   const a = document.createElement('a');
   a.className = 'project-card' + (p.featured ? ' featured' : '') + (p.dark ? ' dark-card' : '');
   a.href = p.link || '#';
-  if (p.link && p.link !== '#') a.target = '_blank';
+  if (p.link && p.link !== '#' && p.link.includes('://')) a.target = '_blank';
   a.setAttribute('data-type', p.type);
 
   const tagsHtml = (p.tags || []).map(t => `<span class="tag-pill">#${t}</span>`).join('');

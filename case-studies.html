@@ -451,26 +451,28 @@
      darkCover   : true for dark hatched cover
 ═══════════════════════════════════════════════════════ */
 const CASES = [
-  /* ── add case studies here when ready ──
   {
-    client: "Client Name",
-    title: "Project Title",
-    desc: "What you did and why it mattered.",
-    tags: ["automation"],
-    year: "2025",
-    outcomes: [{ value: "3×", label: "faster" }],
-    link: "#",
-    featured: false,
-    darkCover: false
+    client: "Academic",
+    title: "Transcript-to-Article Pipeline",
+    desc: "Lecturers buried real case studies inside lecture transcripts — specific companies, actual outcomes, first-person accounts — and nobody ever extracted them. Built a 3-skill AI pipeline (audit, mine, draft) that turns a transcript archive into a structured library of publication-ready case-study articles, with human judgment at the bottleneck.",
+    tags: ["automation", "content", "strategy"],
+    year: "2026",
+    outcomes: [
+      { value: "3", label: "specialized skills" },
+      { value: "~5%", label: "case material in transcripts" },
+      { value: "0%", label: "previously utilized" }
+    ],
+    link: "case-lecture-pipeline.html",
+    featured: true,
+    darkCover: true
   }
-  */
 ];
 
 function buildCard(cs) {
   const a = document.createElement('a');
   a.className = 'case-card' + (cs.featured ? ' featured' : '') + (cs.darkCover ? ' dark-cover' : '');
   a.href = cs.link || '#';
-  if (cs.link && cs.link !== '#') a.target = '_blank';
+  if (cs.link && cs.link !== '#' && cs.link.includes('://')) a.target = '_blank';
   a.setAttribute('data-type', cs.tags.join(','));
 
   const tagsHtml = cs.tags.map(t => `<span class="tag-pill">#${t}</span>`).join('');

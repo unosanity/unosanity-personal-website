@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transcript-to-Article Pipeline — unosanity</title>
+<link rel="stylesheet" href="style.css">
+<script src="tweaks-apply.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+.article-shell {
+  border-bottom: 3px solid var(--ink);
+}
+
+.article-header {
+  padding: 32px 28px 0;
+  border-bottom: 2px solid var(--ink);
+}
+
+.article-header-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.article-date {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #999;
+}
+
+.article-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.article-tags .tag-pill { font-size: 8px; }
+
+/* ─── ARTICLE BODY ─── */
+.article-body {
+  padding: 32px 28px 48px;
+  max-width: 720px;
+}
+
+.article-body h1 {
+  font-family: var(--display);
+  font-size: 42px;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  line-height: 1;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 10px;
+}
+
+.article-body h2 {
+  font-family: var(--display);
+  font-size: 28px;
+  letter-spacing: 2px;
+  margin: 28px 0 10px;
+  line-height: 1.1;
+}
+
+.article-body h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 22px 0 8px;
+  color: #666;
+}
+
+.article-body p {
+  font-size: 13px;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  max-width: 640px;
+}
+
+.article-body ul, .article-body ol {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.article-body li {
+  font-size: 13px;
+  line-height: 1.8;
+  margin-bottom: 4px;
+}
+
+.article-body a { text-decoration: underline; text-underline-offset: 2px; }
+.article-body a:hover { color: var(--red); }
+
+.article-body blockquote {
+  border-left: 3px solid var(--ink);
+  padding: 8px 0 8px 18px;
+  margin: 20px 0;
+  color: #555;
+  font-style: italic;
+}
+
+.article-body code {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--ink);
+  color: #b8f500;
+  padding: 1px 5px;
+}
+
+.article-body pre {
+  background: var(--ink);
+  color: #d0d0d0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  margin: 16px 0;
+  border: none;
+}
+
+.article-body pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.article-body hr {
+  border: none;
+  border-top: 2px solid var(--ink);
+  margin: 28px 0;
+}
+
+.article-body strong { font-weight: 700; }
+.article-body em { font-style: italic; }
+
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 12px;
+}
+
+.article-body th, .article-body td {
+  padding: 8px 10px;
+  border: 1px solid #c9c5b8;
+  text-align: left;
+}
+
+.article-body th {
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+/* back link */
+.article-back {
+  padding: 20px 28px;
+}
+
+.article-back a {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--red);
+  text-decoration: underline;
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 600px) {
+  .article-header { padding: 22px 18px 0; }
+  .article-body { padding: 24px 18px 28px; max-width: 100%; }
+  .article-body h1 { font-size: 32px; letter-spacing: 1.5px; }
+  .article-body h2 { font-size: 22px; letter-spacing: 1.5px; margin: 22px 0 8px; }
+  .article-body h3 { font-size: 12px; }
+  .article-body p { font-size: 13px; line-height: 1.75; }
+  .article-body li { font-size: 13px; line-height: 1.75; }
+  .article-body pre { padding: 14px 14px; font-size: 10.5px; }
+  .article-body pre code { font-size: 10.5px; line-height: 1.65; }
+  .article-body code { font-size: 10.5px; word-break: break-word; }
+  .article-body blockquote { padding-left: 14px; margin: 16px 0; }
+  .article-body table { font-size: 12px; }
+  .article-back { padding: 16px 18px; }
+}
+
+@media (max-width: 380px) {
+  .article-body { padding: 20px 14px 24px; }
+  .article-body h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-logo" href="index.html">UNOSANITY</a>
+  <div class="nav-links">
+    <a href="index.html">Index</a>
+    <a href="projects.html">Projects</a>
+    <a href="case-studies.html" class="active">Work</a>
+    <a href="notes.html">Notes</a>
+  </div>
+</nav>
+
+<main>
+  <div class="article-shell">
+    <div class="article-header">
+      <div class="article-header-row">
+        <span class="article-date">Apr 28, 2026</span>
+        <div class="article-tags">
+          <span class="tag-pill">#content</span>
+          <span class="tag-pill">#automation</span>
+          <span class="tag-pill">#pipeline</span>
+          <span class="tag-pill">#case-study</span>
+        </div>
+      </div>
+    </div>
+    <div class="article-body" id="article-body"></div>
+    <div class="article-back">
+      <a href="case-studies.html">&larr; back to all work</a>
+    </div>
+  </div>
+</main>
+
+<script>
+const article = `# Our lecturers tell incredible stories. Then the stories die.
+
+Every week, in every lecture, someone offhandedly mentions a real case. "We had a client who did X and Y happened." "I worked on a project where we tested Z and the result surprised everyone." Specific. Named. Concrete. Then the lecture ends, the transcript goes into the archive, and that's it. Nobody ever reads it again.
+
+This bothered me for a long time. We were sitting on what amounted to a private library of case-study material — battle-tested, first-person, told by people who actually did the work — and using roughly zero percent of it.
+
+So I built a system. Three skills, one pipeline. Here's how it works.
+
+## Why one prompt won't work
+
+The naive version of this is: "Hey Claude, read all these transcripts and write me case-study articles." That fails three ways at once.
+
+First, you don't actually know what's worth pulling. A lecture is mostly definitions, frameworks, and Q&A. The case material — the part where someone says "we tried X and got Y" — is maybe 5% of the runtime, scattered across dozens of transcripts, unmarked, often unnamed.
+
+Second, you don't know what you already have. If half the cases worth writing are already covered in your published library, mining them again wastes everyone's time. You need to know your own corpus before you go quarrying.
+
+Third, even if you had a perfectly curated list of fragments, going from "thirty seconds of speech where someone mentions a project" to "1,500-word article that reads like it was reported, not hallucinated" is its own job. Try to do it in the same pass as extraction and the model will helpfully invent the parts you don't have.
+
+The fix is to split the work into three.
+
+\`\`\`mermaid
+flowchart TD
+    A[Published library] --> B[corpus-audit]
+    B --> C[Strategic map<br/>gaps + format opportunities]
+
+    D[Lecture transcripts] --> E[case-study-miner]
+    E --> F[Fragment registry<br/>tiered + cross-referenced]
+
+    C --> G(Article mapping<br/>human judgment)
+    F --> G
+
+    G --> H[case-create-fragments]
+    H --> I[Publication-ready draft]
+\`\`\`
+
+Two raw inputs feed two extraction skills. Their outputs get fused, by hand, into the article mapping that drives the drafting skill. The human judgment in the middle isn't a bottleneck — it's the whole point of why the pipeline works.
+
+## Stage 1 — Map what you have
+
+The first skill, \`corpus-audit\`, reads the existing published library. Not transcripts. Articles. The stuff that's already out there, public, indexed.
+
+It fans out subagents — one per article — that fingerprint each piece into a structured card: archetype, audience, topic, tone, what it does well, what it leaves on the table. Then a second phase does the corpus-level work: where are the archetype gaps, which audiences are over- or under-served, what derivative formats are sitting there waiting to be made.
+
+The output isn't articles. It's a strategic map. Before I touch a transcript, I know exactly which case-study slots in the library are empty.
+
+## Stage 2 — Mine the raw material
+
+The second skill, \`case-study-miner\`, points at a folder of transcripts. Subagent per transcript again, but the job is different: scan for any moment where a real case is mentioned — named company, specific outcome, documented process, before/after numbers, anything concrete.
+
+Each fragment goes into a tiered registry, ranked by how usable it is:
+
+| Tier | What qualifies |
+|------|----------------|
+| **Named, with details** | Specific company, specific outcome, numbers attached |
+| **Named, vague** | Company mentioned, outcome implied but unquantified |
+| **Generic anecdote** | No name, just the shape of a story |
+
+Then a synthesis pass looks across transcripts: did three different lecturers all touch the same company from different angles? That combination is worth more than any single fragment alone.
+
+What comes out is a structured registry of every case-study gem buried in the archive, sorted by how usable it is, with cross-references for the combinable ones. Uncut gems, in a tray, labelled.
+
+## Stage 3 — Turn fragments into an article
+
+This is where most pipelines I've seen fall over. You have the gem. Now write 1,500 words about it without making anything up.
+
+\`case-create-fragments\` doesn't accept a vague brief. It requires a pre-built article mapping: which fragments go where, what the skeleton looks like, what's been verified externally, what gaps remain. The work of judgment — what's the story, what's the angle, what's missing — happens before the skill runs. The skill is the cutter, not the appraiser.
+
+Given that mapping, it produces a publication-ready draft: correct length, correct register, the speaker's voice preserved where they're being quoted, connective tissue written in the publication's voice. A humanizer pass runs at the end so the prose doesn't read like a model wrote it.
+
+## What I learned
+
+The thing that surprised me is how much each stage hates being merged with the others. Mining and writing are different brain modes. Auditing and mining are different brain modes. Whenever I tried to compress two stages into one, the model started cutting corners on whichever job was further from the prompt's center of gravity.
+
+Splitting the pipeline didn't just make the output better. It made the failure modes legible. When something goes wrong now, I know whether it failed at "what do we have," "what's worth mining," or "how do we draft." Three small problems are tractable. One big problem is just a vibe.
+
+The transcripts are no longer a graveyard. They're a quarry, and the quarry has a map.`;
+
+document.getElementById('article-body').innerHTML = marked.parse(article);
+</script>
+<script src="pixel-trail.js"></script>
+<script>initPixelTrail({ pixelSize: 16, fadeDuration: 1200, color: '#0f0f0f', opacity: 0.9, gooStrength: 4 });</script>
+</body>
+</html>
