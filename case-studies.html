@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Studies — unosanity</title>
+<link rel="stylesheet" href="style.css">
+<script src="tweaks-apply.js"></script>
+<style>
+.page-header {
+  padding: 28px 28px 0;
+  border-bottom: 3px solid var(--ink);
+}
+
+.page-header-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-header h1 {
+  font-family: var(--display);
+  font-size: clamp(52px, 9vw, 110px);
+  letter-spacing: 4px;
+  line-height: 0.9;
+  transform: rotate(-0.3deg);
+  transform-origin: left;
+}
+
+.page-header-desc {
+  font-size: 11px;
+  color: #888;
+  max-width: 260px;
+  text-align: right;
+  padding-bottom: 6px;
+  line-height: 1.6;
+}
+
+.page-header-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.case-count {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #999;
+  text-transform: uppercase;
+}
+
+/* ─── FILTER BAR ─── */
+.filter-bar {
+  padding: 12px 28px;
+  border-bottom: 2px solid var(--ink);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #999;
+  margin-right: 4px;
+}
+
+/* ─── GRID ─── */
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-left: 2px solid var(--ink);
+}
+
+@media (max-width: 700px) { .cases-grid { grid-template-columns: 1fr; } }
+
+.case-card {
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.12s;
+  position: relative;
+  overflow: hidden;
+}
+
+.case-card:hover { background: rgba(0,0,0,0.025); }
+
+/* featured spans full width */
+.case-card.featured { grid-column: span 2; }
+
+/* cover image area */
+.case-cover {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background: repeating-linear-gradient(
+    -45deg,
+    #ddd9cc,
+    #ddd9cc 2px,
+    #e9e5d8 2px,
+    #e9e5d8 14px
+  );
+  border-bottom: 2px solid var(--ink);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.case-card.featured .case-cover { aspect-ratio: 21 / 7; }
+
+.case-card.dark-cover .case-cover {
+  background: repeating-linear-gradient(
+    -45deg,
+    #1a1a1a,
+    #1a1a1a 2px,
+    #111 2px,
+    #111 14px
+  );
+}
+
+.cover-label {
+  font-family: var(--display);
+  font-size: clamp(32px, 5vw, 72px);
+  letter-spacing: 6px;
+  color: rgba(0,0,0,0.08);
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+}
+
+.case-card.dark-cover .cover-label { color: rgba(255,255,255,0.06); }
+
+/* corner year stamp */
+.cover-year {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(0,0,0,0.3);
+  font-family: var(--mono);
+}
+
+.case-card.dark-cover .cover-year { color: rgba(255,255,255,0.2); }
+
+/* card body */
+.case-body {
+  padding: 22px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.case-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.case-client {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.case-title {
+  font-family: var(--display);
+  font-size: clamp(24px, 3vw, 38px);
+  letter-spacing: 2px;
+  line-height: 1.05;
+  margin-top: 2px;
+}
+
+.case-desc {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #555;
+  max-width: 540px;
+}
+
+/* outcome strip */
+.case-outcomes {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  border-top: 1px solid #d0ccc0;
+  margin-top: auto;
+}
+
+.outcome-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.outcome-value {
+  font-family: var(--display);
+  font-size: 28px;
+  letter-spacing: 1px;
+  line-height: 1;
+  color: var(--red);
+}
+
+.outcome-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #999;
+}
+
+.case-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.case-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.case-tags .tag-pill { font-size: 8px; color: #888; border-color: #bbb; }
+
+.case-arrow {
+  font-size: 16px;
+  color: #bbb;
+  transition: color 0.1s, transform 0.12s;
+}
+
+.case-card:hover .case-arrow { color: var(--ink); transform: translateX(4px); }
+
+/* hidden */
+.case-card[data-hidden="true"] { display: none; }
+
+/* ─── EMPTY MODAL ─── */
+.empty-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(15,15,15,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.empty-modal {
+  background: var(--bg);
+  border: 3px solid var(--ink);
+  padding: 44px 48px 40px;
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  position: relative;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.empty-modal-title {
+  font-family: var(--display);
+  font-size: clamp(36px, 6vw, 60px);
+  letter-spacing: 3px;
+  line-height: 1;
+}
+
+.empty-modal-body {
+  font-size: 13px;
+  line-height: 1.75;
+  color: #555;
+}
+
+.empty-modal-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.empty-modal-links a {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border: 2px solid var(--ink);
+  text-decoration: none;
+  transition: background 0.1s, color 0.1s;
+}
+
+.empty-modal-links a:hover { background: var(--ink); color: var(--bg); }
+
+.empty-modal-dismiss {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #bbb;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--mono);
+  padding: 4px;
+}
+
+.empty-modal-dismiss:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-logo" href="index.html">UNOSANITY</a>
+  <div class="nav-links">
+    <a href="index.html">Index</a>
+    <a href="projects.html">Projects</a>
+    <a href="case-studies.html" class="active">Work</a>
+    <a href="notes.html">Notes</a>
+  </div>
+</nav>
+
+<main>
+  <div class="page-header">
+    <div class="page-header-top">
+      <h1>WORK</h1>
+      <p class="page-header-desc">Selected projects done for actual clients for actual money. NDA'd where needed.</p>
+    </div>
+    <div class="page-header-meta">
+      <span class="case-count" id="case-count">— case studies</span>
+      <span style="font-size:10px;color:#999;letter-spacing:1px;">results are real. names sometimes aren't.</span>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <span class="tag-pill active" data-filter="all">All</span>
+    <span class="tag-pill" data-filter="automation">Automation</span>
+    <span class="tag-pill" data-filter="content">Content</span>
+    <span class="tag-pill" data-filter="strategy">Strategy</span>
+    <span class="tag-pill" data-filter="development">Development</span>
+  </div>
+
+  <div class="cases-grid" id="cases-grid"></div>
+</main>
+
+<!-- Empty state modal — remove once CASES has entries -->
+<div class="empty-overlay" id="empty-overlay">
+  <div class="empty-modal">
+    <button class="empty-modal-dismiss" onclick="document.getElementById('empty-overlay').style.display='none'">✕ close</button>
+    <svg width="56" height="56" viewBox="0 0 8 8" style="image-rendering:pixelated;" fill="var(--ink)">
+      <rect x="2" y="1" width="1" height="2"/>
+      <rect x="5" y="1" width="1" height="2"/>
+      <rect x="1" y="5" width="1" height="1"/>
+      <rect x="2" y="6" width="4" height="1"/>
+      <rect x="6" y="5" width="1" height="1"/>
+    </svg>
+    <div class="empty-modal-title">NOTHING<br>HERE YET</div>
+    <p class="empty-modal-body">
+      No case studies up yet. I'm working on writing them up.<br><br>
+      Come back soon, or nudge me directly:
+    </p>
+    <div class="empty-modal-links">
+      <a href="https://t.me/kaysane3x6" target="_blank">Telegram →</a>
+      <a href="https://instagram.com/unosanity" target="_blank">Instagram →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   YOUR CASE STUDIES — edit this array to add/update work
+   Fields:
+     client      : company name (or "Confidential")
+     title       : project title
+     desc        : 1-2 sentence description of what you did
+     tags        : string[] — used for filtering
+     year        : '2025'
+     outcomes    : [{ value: '3×', label: 'faster pipeline' }, ...]
+     link        : URL or '#'
+     featured    : true for full-width card
+     darkCover   : true for dark hatched cover
+═══════════════════════════════════════════════════════ */
+const CASES = [
+  /* ── add case studies here when ready ──
+  {
+    client: "Client Name",
+    title: "Project Title",
+    desc: "What you did and why it mattered.",
+    tags: ["automation"],
+    year: "2025",
+    outcomes: [{ value: "3×", label: "faster" }],
+    link: "#",
+    featured: false,
+    darkCover: false
+  }
+  */
+];
+
+function buildCard(cs) {
+  const a = document.createElement('a');
+  a.className = 'case-card' + (cs.featured ? ' featured' : '') + (cs.darkCover ? ' dark-cover' : '');
+  a.href = cs.link || '#';
+  if (cs.link && cs.link !== '#') a.target = '_blank';
+  a.setAttribute('data-type', cs.tags.join(','));
+
+  const tagsHtml = cs.tags.map(t => `<span class="tag-pill">#${t}</span>`).join('');
+  const outcomesHtml = (cs.outcomes || []).map(o => `
+    <div class="outcome-item">
+      <span class="outcome-value">${o.value}</span>
+      <span class="outcome-label">${o.label}</span>
+    </div>
+  `).join('');
+
+  a.innerHTML = `
+    <div class="case-cover">
+      <span class="cover-label">${cs.client}</span>
+      <span class="cover-year">${cs.year}</span>
+    </div>
+    <div class="case-body">
+      <div class="case-top">
+        <div>
+          <div class="case-client">${cs.client}</div>
+          <div class="case-title">${cs.title}</div>
+        </div>
+        <span class="type-badge type-${cs.tags[0]}">${cs.tags[0]}</span>
+      </div>
+      <p class="case-desc">${cs.desc}</p>
+      ${outcomesHtml ? `<div class="case-outcomes">${outcomesHtml}</div>` : ''}
+      <div class="case-footer">
+        <div class="case-tags">${tagsHtml}</div>
+        <span class="case-arrow">→</span>
+      </div>
+    </div>
+  `;
+  return a;
+}
+
+const grid = document.getElementById('cases-grid');
+CASES.forEach(cs => grid.appendChild(buildCard(cs)));
+document.getElementById('case-count').textContent = `${CASES.length} case studies`;
+
+// hide modal if there are real entries
+if (CASES.length > 0) {
+  document.getElementById('empty-overlay').style.display = 'none';
+}
+
+// filter
+document.querySelectorAll('[data-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.case-card').forEach(card => {
+      const show = f === 'all' || card.dataset.type.includes(f);
+      card.setAttribute('data-hidden', show ? 'false' : 'true');
+    });
+    const visible = [...document.querySelectorAll('.case-card')].filter(c => c.dataset.hidden !== 'true').length;
+    document.getElementById('case-count').textContent = `${visible} case studies`;
+  });
+});
+</script>
+<script src="pixel-trail.js"></script>
+<script>initPixelTrail({ pixelSize: 16, fadeDuration: 1200, color: '#0f0f0f', opacity: 0.9, gooStrength: 4 });</script>
+</body>
+</html>

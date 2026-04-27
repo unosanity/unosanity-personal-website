@@ -1,0 +1,346 @@
+<!DOCTYPE html><html lang="en"><head>
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>unosanity</title>
+<link rel="stylesheet" href="style.css">
+<script src="tweaks-apply.js"></script>
+<style>
+/* ─── HOME SPECIFIC ─── */
+.hero {
+  padding: 0 0 0 0;
+  border-bottom: 3px solid var(--ink);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-name {
+  font-family: var(--display);
+  font-size: clamp(100px, 18vw, 240px);
+  line-height: 0.85;
+  letter-spacing: -2px;
+  color: var(--ink);
+  padding: 20px 24px 0;
+  display: block;
+  position: relative;
+  /* slight askew */
+  transform: rotate(-0.4deg);
+  transform-origin: left bottom;
+}
+
+.hero-handle-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 4px 24px 18px;
+  border-top: 1px solid #bbb;
+  margin-top: 8px;
+}
+
+.hero-handle {
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 56px);
+  letter-spacing: 8px;
+  color: #777;
+}
+
+.hero-year {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #999;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+}
+
+/* ─── CONTENT GRID ─── */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  border-bottom: 2px solid var(--ink);
+}
+
+@media (max-width: 720px) {
+  .content-grid { grid-template-columns: 1fr; }
+}
+
+.bio-col {
+  padding: 32px 28px 40px;
+  border-right: 2px solid var(--ink);
+}
+
+.bio-intro {
+  font-size: 15px;
+  line-height: 1.75;
+  max-width: 600px;
+  margin-bottom: 28px;
+}
+
+.bio-intro strong { font-weight: 700; }
+
+.tagline-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 32px;
+}
+
+.tagline-item {
+  font-family: var(--display);
+  font-size: clamp(28px, 3.5vw, 48px);
+  letter-spacing: 3px;
+  line-height: 1.05;
+  border-top: 1px solid #ccc;
+  padding: 8px 0;
+}
+
+.tagline-item:last-child { border-bottom: 1px solid #ccc; }
+
+.tagline-item span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #999;
+  vertical-align: middle;
+  margin-right: 12px;
+  text-transform: uppercase;
+}
+
+/* links row */
+.links-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 8px;
+}
+
+.ext-link {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 18px 8px 0;
+  margin-right: 18px;
+  border-bottom: 2px solid var(--ink);
+  text-decoration: none;
+  transition: color 0.1s;
+}
+
+.ext-link:hover { color: var(--red); border-color: var(--red); }
+
+/* ─── STATUS SIDEBAR ─── */
+.status-col {
+  padding: 28px 22px;
+}
+
+.status-block {
+  margin-bottom: 28px;
+}
+
+.status-block-title {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #888;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.status-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--ink);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.status-dot.red { background: var(--red); }
+
+.now-playing {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 12px 14px;
+  margin-top: 4px;
+}
+
+.now-playing .label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.now-playing .track {
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* ─── RECENT NOTES STRIP ─── */
+.recent-notes {
+  padding: 20px 28px;
+}
+
+.recent-notes-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.recent-notes-header h2 {
+  font-family: var(--display);
+  font-size: 32px;
+  letter-spacing: 3px;
+}
+
+.recent-notes-header a {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--red);
+  text-decoration: underline;
+}
+
+.note-row {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 16px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-top: 1px solid #ccc;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.1s;
+}
+
+.note-row:hover { background: rgba(0,0,0,0.03); }
+.note-row:hover .note-title { text-decoration: underline; }
+
+.note-date {
+  font-size: 10px;
+  color: #999;
+  letter-spacing: 1px;
+}
+
+.note-title { font-size: 13px; }
+
+.note-tags { font-size: 9px; color: #aaa; letter-spacing: 1px; text-transform: uppercase; }
+</style>
+</head>
+<body data-cc-id="cc-1" style="cursor: crosshair;">
+
+<nav class="site-nav">
+  <a class="nav-logo" href="index.html">UNOSANITY</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Index</a>
+    <a href="projects.html">Projects</a>
+    <a href="case-studies.html">Work</a>
+    <a href="notes.html">Notes</a>
+  </div>
+</nav>
+
+
+
+<main>
+
+  <section class="hero">
+    <span class="hero-name">KIRILL</span>
+    <div class="hero-handle-row">
+      <span class="hero-year">est. 2026 &nbsp;·&nbsp; earth</span>
+    </div>
+  </section>
+
+  <div class="content-grid">
+    <div class="bio-col">
+
+      <div class="tagline-stack">
+        <div class="tagline-item"><span>01</span>Content Specialist</div>
+        <div class="tagline-item"><span>02</span>Automation Builder</div>
+        <div class="tagline-item"><span>03</span>Problem Solver</div>
+      </div>
+
+      <p class="bio-intro">
+        I make things for people, by people. I also write, like... obsessively about everything and anything.
+      </p>
+
+      <p class="bio-intro" style="font-size: 12px; color: #666; max-width: 540px;">
+        If it's useful or interesting, it ends up here. This is a sanctum free from the algorithm, slop, politics or any other bullshit. Just pure vibes.</p>
+
+
+
+      <div class="links-row">
+        <a class="ext-link" href="https://github.com/unosanity" target="_blank">GitHub</a>
+        <a class="ext-link" href="https://instagram.com/unosanity" target="_blank">Instagram</a>
+        <a class="ext-link" href="https://t.me/kaysane3x6" target="_blank">Telegram</a>
+      </div>
+
+    </div>
+
+    <div class="status-col">
+
+      <div class="status-block">
+        <div class="status-block-title">Currently</div>
+        <div class="status-item">
+          <div class="status-dot red"></div>
+          <div>Building a mostly-automated content department</div>
+        </div>
+        <div class="status-item">
+          <div class="status-dot"></div>
+          <div>Training my own LLM to replace me</div>
+        </div>
+        <div class="status-item">
+          <div class="status-dot"></div>
+          <div>Somewhere on the internet</div>
+        </div>
+      </div>
+
+      <div class="status-block">
+        <div class="status-block-title">Recently</div>
+        <div class="status-item">
+          <div class="status-dot"></div>
+          <div>Made this website</div>
+        </div>
+        <div class="status-item">
+          <div class="status-dot"></div>
+          <div>Read a lot. Retained 40% of it.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <section class="recent-notes">
+    <div class="recent-notes-header">
+      <h2>Recent Notes</h2>
+      <a href="notes.html">All notes →</a>
+    </div>
+
+    <a class="note-row" href="notes.html" style="display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid #ccc;color:#999;font-size:12px;font-style:italic;">
+      <svg width="20" height="20" viewBox="0 0 8 8" style="image-rendering:pixelated;flex-shrink:0;" fill="#bbb">
+        <rect x="2" y="1" width="1" height="2"/>
+        <rect x="5" y="1" width="1" height="2"/>
+        <rect x="1" y="5" width="1" height="1"/>
+        <rect x="2" y="6" width="4" height="1"/>
+        <rect x="6" y="5" width="1" height="1"/>
+      </svg>
+      no notes yet — come back soon-ish
+    </a>
+
+  </section>
+
+</main>
+
+
+<script src="pixel-trail.js"></script>
+<script>initPixelTrail({ pixelSize: 16, fadeDuration: 1200, color: '#0f0f0f', opacity: 0.9, gooStrength: 4 });</script>
+</body></html>

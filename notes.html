@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notes — unosanity</title>
+<link rel="stylesheet" href="style.css">
+<script src="tweaks-apply.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+.page-header {
+  padding: 28px 28px 0;
+  border-bottom: 3px solid var(--ink);
+}
+
+.page-header h1 {
+  font-family: var(--display);
+  font-size: clamp(60px, 10vw, 120px);
+  letter-spacing: 4px;
+  line-height: 0.9;
+  transform: rotate(-0.3deg);
+  transform-origin: left;
+}
+
+.page-header-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.note-count {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #999;
+  text-transform: uppercase;
+}
+
+/* ─── TAG FILTERS ─── */
+.tag-bar {
+  padding: 12px 28px;
+  border-bottom: 2px solid var(--ink);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tag-bar-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #999;
+  margin-right: 4px;
+}
+
+/* ─── NOTE LIST ─── */
+.notes-list { border-bottom: 2px solid var(--ink); }
+
+.note-entry {
+  border-bottom: 1px solid #d0ccc0;
+  overflow: hidden;
+}
+
+.note-entry:last-child { border-bottom: none; }
+
+.note-entry-header {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 28px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s;
+}
+
+.note-entry-header:hover { background: rgba(0,0,0,0.03); }
+
+.note-entry.open .note-entry-header {
+  background: var(--ink);
+  color: var(--bg);
+  border-bottom: 1px solid #333;
+}
+
+.note-date-col {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #999;
+  white-space: nowrap;
+}
+
+.note-entry.open .note-date-col { color: #888; }
+
+.note-title-col {
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.note-meta-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.note-tags-inline { display: flex; gap: 4px; flex-wrap: wrap; }
+.note-tags-inline .tag-pill { font-size: 8px; }
+.note-entry.open .note-tags-inline .tag-pill { border-color: #555; color: #777; }
+
+.note-toggle {
+  font-size: 14px;
+  width: 24px;
+  text-align: center;
+  transition: transform 0.2s;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.note-entry.open .note-toggle {
+  transform: rotate(45deg);
+  color: var(--bg);
+}
+
+.note-read-time {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #bbb;
+  white-space: nowrap;
+}
+
+/* ─── MARKDOWN BODY ─── */
+.note-body {
+  display: none;
+  padding: 32px 28px 36px;
+  border-top: 1px solid #d0ccc0;
+  max-width: 720px;
+}
+
+.note-entry.open .note-body { display: block; }
+
+/* Markdown content styles */
+.note-body h1 {
+  font-family: var(--display);
+  font-size: 42px;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  line-height: 1;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 10px;
+}
+
+.note-body h2 {
+  font-family: var(--display);
+  font-size: 28px;
+  letter-spacing: 2px;
+  margin: 28px 0 10px;
+  line-height: 1.1;
+}
+
+.note-body h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 22px 0 8px;
+  color: #666;
+}
+
+.note-body p {
+  font-size: 13px;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  max-width: 640px;
+}
+
+.note-body ul, .note-body ol {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.note-body li {
+  font-size: 13px;
+  line-height: 1.8;
+  margin-bottom: 4px;
+}
+
+.note-body a { text-decoration: underline; text-underline-offset: 2px; }
+.note-body a:hover { color: var(--red); }
+
+.note-body blockquote {
+  border-left: 3px solid var(--ink);
+  padding: 8px 0 8px 18px;
+  margin: 20px 0;
+  color: #555;
+  font-style: italic;
+}
+
+.note-body code {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--ink);
+  color: #b8f500;
+  padding: 1px 5px;
+}
+
+.note-body pre {
+  background: var(--ink);
+  color: #d0d0d0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  margin: 16px 0;
+  border: none;
+}
+
+.note-body pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.note-body hr {
+  border: none;
+  border-top: 2px solid var(--ink);
+  margin: 28px 0;
+}
+
+.note-body strong { font-weight: 700; }
+.note-body em { font-style: italic; }
+
+/* ─── EMPTY STATE ─── */
+.empty-state {
+  padding: 60px 28px;
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+}
+
+/* hidden */
+.note-entry[data-hidden="true"] { display: none; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-logo" href="index.html">UNOSANITY</a>
+  <div class="nav-links">
+    <a href="index.html">Index</a>
+    <a href="projects.html">Projects</a>
+    <a href="case-studies.html">Work</a>
+    <a href="notes.html" class="active">Notes</a>
+  </div>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>NOTES</h1>
+    <div class="page-header-sub">
+      <span class="note-count" id="note-count">— entries</span>
+      <span style="font-size:10px;color:#999;letter-spacing:1px;">raw markdown. click to read.</span>
+    </div>
+  </div>
+
+  <div class="tag-bar" id="tag-bar">
+    <span class="tag-bar-label">Tags:</span>
+  </div>
+
+  <div class="notes-list" id="notes-list"></div>
+</main>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   NOTES DATA — ADD YOUR NOTES HERE
+   Each note has:
+     id       : unique slug string
+     date     : 'YYYY-MM-DD'
+     title    : string
+     tags     : string[]
+     body     : markdown string (use backtick template literal)
+
+   To add a new note, copy one of the objects below
+   and paste it at the top of the array.
+═══════════════════════════════════════════════════════ */
+const NOTES = [
+  /* ── add notes here when ready ──
+  {
+    id: 'my-first-note',
+    date: '2026-05-01',
+    title: 'Note title',
+    tags: ['thoughts'],
+    body: `# Note title\n\nYour markdown here.`
+  }
+  */
+];
+
+/* ─── RENDER ─── */
+
+function estimateReadTime(body) {
+  const words = body.trim().split(/\s+/).length;
+  const mins = Math.max(1, Math.round(words / 200));
+  return `${mins} min read`;
+}
+
+function formatDate(str) {
+  const d = new Date(str + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// Build tag set
+const allTags = ['all', ...new Set(NOTES.flatMap(n => n.tags))];
+const tagBar = document.getElementById('tag-bar');
+let activeTag = 'all';
+
+allTags.forEach(tag => {
+  const pill = document.createElement('span');
+  pill.className = 'tag-pill' + (tag === 'all' ? ' active' : '');
+  pill.textContent = tag === 'all' ? 'All' : `#${tag}`;
+  pill.addEventListener('click', () => {
+    activeTag = tag;
+    document.querySelectorAll('#tag-bar .tag-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    filterNotes();
+  });
+  tagBar.appendChild(pill);
+});
+
+function filterNotes() {
+  let visible = 0;
+  document.querySelectorAll('.note-entry').forEach(entry => {
+    const tags = entry.dataset.tags.split(',');
+    const show = activeTag === 'all' || tags.includes(activeTag);
+    entry.setAttribute('data-hidden', show ? 'false' : 'true');
+    if (show) visible++;
+  });
+  document.getElementById('note-count').textContent = `${visible} entries`;
+}
+
+// Build list
+const list = document.getElementById('notes-list');
+
+if (NOTES.length === 0) {
+  document.getElementById('tag-bar').style.display = 'none';
+  document.getElementById('note-count').textContent = '0 entries';
+  list.innerHTML = `
+    <div style="padding: 80px 28px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center;">
+      <svg width="64" height="64" viewBox="0 0 8 8" style="image-rendering:pixelated;" fill="var(--ink)">
+        <rect x="2" y="1" width="1" height="2"/>
+        <rect x="5" y="1" width="1" height="2"/>
+        <rect x="1" y="5" width="1" height="1"/>
+        <rect x="2" y="6" width="4" height="1"/>
+        <rect x="6" y="5" width="1" height="1"/>
+      </svg>
+      <div style="font-family:var(--display);font-size:clamp(32px,5vw,56px);letter-spacing:3px;line-height:1;">NO NOTES YET</div>
+      <div style="font-size:12px;color:#888;letter-spacing:1px;">come back soon-ish.</div>
+    </div>
+  `;
+}
+
+NOTES.forEach(note => {
+  const entry = document.createElement('div');
+  entry.className = 'note-entry';
+  entry.dataset.tags = note.tags.join(',');
+  entry.dataset.id = note.id;
+
+  const tagsHtml = note.tags.map(t => `<span class="tag-pill">#${t}</span>`).join('');
+  const readTime = estimateReadTime(note.body);
+  const rendered = marked.parse(note.body.trim());
+
+  entry.innerHTML = `
+    <div class="note-entry-header">
+      <span class="note-date-col">${formatDate(note.date)}</span>
+      <span class="note-title-col">${note.title}</span>
+      <div class="note-meta-col">
+        <span class="note-read-time">${readTime}</span>
+        <div class="note-tags-inline">${tagsHtml}</div>
+        <span class="note-toggle">+</span>
+      </div>
+    </div>
+    <div class="note-body">${rendered}</div>
+  `;
+
+  entry.querySelector('.note-entry-header').addEventListener('click', () => {
+    const isOpen = entry.classList.contains('open');
+    // close all
+    document.querySelectorAll('.note-entry.open').forEach(e => e.classList.remove('open'));
+    if (!isOpen) entry.classList.add('open');
+  });
+
+  list.appendChild(entry);
+});
+
+document.getElementById('note-count').textContent = `${NOTES.length} entries`;
+</script>
+<script src="pixel-trail.js"></script>
+<script>initPixelTrail({ pixelSize: 16, fadeDuration: 1200, color: '#0f0f0f', opacity: 0.9, gooStrength: 4 });</script>
+</body>
+</html>
