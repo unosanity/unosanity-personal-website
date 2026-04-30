@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="tweaks-apply.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
 .page-header {
   padding: 28px 28px 0;
@@ -229,6 +230,33 @@
   line-height: 1.7;
 }
 
+.note-body pre:has(code.language-mermaid) {
+  display: none;
+}
+
+.note-body .mermaid {
+  width: 100%;
+  margin: 22px 0 26px;
+  padding: 18px;
+  overflow-x: auto;
+  background: #f3efe3;
+  border: 2px solid var(--ink);
+}
+
+.note-body .mermaid svg {
+  display: block;
+  min-width: 560px;
+  max-width: none;
+  height: auto;
+  overflow: visible;
+  font-family: var(--mono) !important;
+}
+
+.note-body .mermaid :is(text, .label, .nodeLabel, .edgeLabel, .legend text) {
+  font-family: var(--mono) !important;
+  letter-spacing: 0 !important;
+}
+
 .note-body hr {
   border: none;
   border-top: 2px solid var(--ink);
@@ -305,6 +333,8 @@
   .note-body li { font-size: 13px; line-height: 1.75; }
   .note-body pre { padding: 14px 14px; font-size: 10.5px; }
   .note-body pre code { font-size: 10.5px; line-height: 1.65; }
+  .note-body .mermaid { padding: 12px; margin: 18px 0 22px; }
+  .note-body .mermaid svg { min-width: 640px; }
   .note-body code { font-size: 10.5px; word-break: break-word; }
   .note-body blockquote { padding-left: 14px; margin: 16px 0; }
   .note-body table { font-size: 12px; }
@@ -380,6 +410,111 @@
    and paste it at the top of the array.
 ═══════════════════════════════════════════════════════ */
 const NOTES = [
+  {
+    id: 'ai-inference-human-belongs',
+    date: '2026-04-30',
+    title: 'My current thoughts on AI inference — and where a human actually belongs in this',
+    tags: ['AI', 'inference', 'content', 'judgment'],
+    body: `# My current thoughts on AI inference — and where a human actually belongs in this
+
+*A Prophetgram journal entry · unosanity.uno*
+
+---
+
+## The myth that won't die
+
+People keep saying AI can't make subjective calls. That once you step off the black-and-white map, the model falls apart. Can't pick the prettier vase. Can't score a curriculum for quality. Can't tell you whether an article actually lands.
+
+I've been watching this argument for a while now, and I think it's wrong in an interesting way.
+
+The model isn't the weak link.
+
+---
+
+## What people actually hand the AI
+
+Here's what I've noticed working in content: when AI gives you a bad subjective judgment, it's almost never the model's fault. You gave it a verdict prompt, not a thinking prompt.
+
+There's a real distance between "which base looks better in this room?" and "evaluate these bases on color harmony with the existing palette, proportion relative to the table height, and visual weight — then tell me which scores highest." The AI didn't get smarter between those two prompts. You just stopped asking it to read your mind.
+
+\`\`\`mermaid
+flowchart LR
+    A[❌ Verdict Only\\n'Which is prettier?'] --> B[AI Guesses\\nRandom Output]
+    C[✅ Framework First\\nCriteria → Weighting → Judgment] --> D[AI Reasons\\nConsistent Output]
+
+    style A fill:#6600bf,color:#e9e5d8,stroke:#0f0f0f,stroke-width:2px
+    style B fill:#d8c7e8,color:#0f0f0f,stroke:#0f0f0f,stroke-width:1px
+    style C fill:#0f0f0f,color:#e9e5d8,stroke:#6600bf,stroke-width:2px
+    style D fill:#d6d1c3,color:#0f0f0f,stroke:#0f0f0f,stroke-width:1px
+\`\`\`
+
+---
+
+## In content work, this hits differently
+
+Scoring a curriculum, evaluating a content piece, deciding if a post earns its place in a series — I can do all of this with AI inference. But only after I've done the harder work upstream.
+
+What that looks like in practice:
+
+\`\`\`mermaid
+graph TD
+    H[🧠 Human Work]
+    H --> C1[Define what 'good' means]
+    H --> C2[Assign weight to each criterion]
+    H --> C3[Set the threshold for pass/fail]
+    C1 --> AI[⚡ AI Inference]
+    C2 --> AI
+    C3 --> AI
+    AI --> O1[Consistent scoring]
+    AI --> O2[Scalable evaluation]
+    AI --> O3[Explainable output]
+
+    style H fill:#0f0f0f,color:#e9e5d8,stroke:#6600bf,stroke-width:2px
+    style AI fill:#6600bf,color:#e9e5d8,stroke:#0f0f0f,stroke-width:2px
+\`\`\`
+
+The human isn't there to make the call. The human builds the scaffolding the call gets made inside. That's a genuinely different job — and if we're being honest, a harder one.
+
+---
+
+## Where AI judgment holds up vs. where it needs you
+
+Not all subjective tasks are the same kind of hard. Here's my rough map of where AI handles things well versus where human calibration is doing most of the lifting:
+
+\`\`\`mermaid
+quadrantChart
+    title AI Judgment Capability vs. Human Input Required
+    x-axis Low Human Input --> High Human Input
+    y-axis Low AI Capability --> High AI Capability
+    quadrant-1 Sweet Spot
+    quadrant-2 AI Handles It
+    quadrant-3 Don't Bother
+    quadrant-4 Human-First
+    Sentiment Analysis: [0.2, 0.8]
+    Grammar & Style: [0.15, 0.9]
+    Article Quality Score: [0.55, 0.75]
+    Curriculum Evaluation: [0.7, 0.65]
+    Brand Voice Match: [0.65, 0.6]
+    Visual Aesthetic Picks: [0.75, 0.5]
+    Cultural Nuance: [0.85, 0.35]
+\`\`\`
+
+The sweet spot is where criteria are buildable and thresholds are definable. Most of what content people do all day lands somewhere in that zone.
+
+---
+
+## What this actually demands of you
+
+The people struggling with AI subjective judgment aren't missing a better prompt template. They haven't externalized their taste yet — haven't made their internal rubric legible enough to hand off. That process is uncomfortable in a specific way: it forces you to articulate standards you've always just felt.
+
+Not a technical skill. Something older and messier than that.
+
+I'm still figuring out how to do it for my own work, honestly. But I'm more convinced every week that it's the work.
+
+---
+
+*More from [unosanity.uno](https://unosanity.uno) · Prophetgram*`
+  },
   {
     id: 'prophet-content-strategy',
     date: '2026-04-27',
@@ -777,6 +912,26 @@ Settings defined but not enforced create false security:
 
 /* ─── RENDER ─── */
 
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  securityLevel: 'loose',
+  fontFamily: 'Space Mono, Courier New, monospace',
+  themeVariables: {
+    background: '#e9e5d8',
+    mainBkg: '#f3efe3',
+    primaryColor: '#e9e5d8',
+    primaryTextColor: '#0f0f0f',
+    primaryBorderColor: '#0f0f0f',
+    lineColor: '#0f0f0f',
+    secondaryColor: '#d6d1c3',
+    tertiaryColor: '#6600bf',
+    textColor: '#0f0f0f',
+    titleColor: '#0f0f0f',
+    fontFamily: 'Space Mono, Courier New, monospace'
+  }
+});
+
 function estimateReadTime(body) {
   const words = body.trim().split(/\s+/).length;
   const mins = Math.max(1, Math.round(words / 200));
@@ -815,6 +970,22 @@ function filterNotes() {
     if (show) visible++;
   });
   document.getElementById('note-count').textContent = `${visible} entries`;
+}
+
+function prepareMermaidDiagrams(root) {
+  root.querySelectorAll('pre > code.language-mermaid').forEach((code, index) => {
+    const diagram = document.createElement('div');
+    diagram.className = 'mermaid';
+    diagram.dataset.diagramIndex = index;
+    diagram.textContent = code.textContent;
+    code.parentElement.replaceWith(diagram);
+  });
+}
+
+function openNoteEntry(entry) {
+  document.querySelectorAll('.note-entry.open').forEach(e => e.classList.remove('open'));
+  entry.classList.add('open');
+  mermaid.run({ nodes: entry.querySelectorAll('.note-body .mermaid:not([data-processed])') });
 }
 
 // Build list
@@ -861,17 +1032,24 @@ NOTES.forEach(note => {
     <div class="note-body">${rendered}</div>
   `;
 
+  prepareMermaidDiagrams(entry);
+
   entry.querySelector('.note-entry-header').addEventListener('click', () => {
     const isOpen = entry.classList.contains('open');
-    // close all
     document.querySelectorAll('.note-entry.open').forEach(e => e.classList.remove('open'));
-    if (!isOpen) entry.classList.add('open');
+    if (!isOpen) openNoteEntry(entry);
   });
 
   list.appendChild(entry);
 });
 
 document.getElementById('note-count').textContent = `${NOTES.length} entries`;
+
+const initialNoteId = window.location.hash.replace('#', '');
+if (initialNoteId) {
+  const initialEntry = document.querySelector(`.note-entry[data-id="${CSS.escape(initialNoteId)}"]`);
+  if (initialEntry) openNoteEntry(initialEntry);
+}
 </script>
 <script src="pixel-trail.js"></script>
 <script>initPixelTrail({ pixelSize: 16, fadeDuration: 1200, color: '#0f0f0f', opacity: 0.9, gooStrength: 4 });</script>
