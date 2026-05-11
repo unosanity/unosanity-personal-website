@@ -5,16 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>Prophetgram — coming soon</title>
 <meta name="description" content="A goal-driven content strategy app for Instagram creators. Coming soon."/>
+<link rel="icon" href="assets/favicon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; background: #0a0a0a; color: #f4f1ea; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-  body { min-height: 100dvh; overflow-x: hidden; }
+  html, body { margin: 0; padding: 0; background: #F4F7FB; color: #0E1A4D; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body { min-height: 100dvh; overflow-x: hidden; padding: 12px; }
   a { color: inherit; }
   button { -webkit-tap-highlight-color: transparent; }
-  ::selection { background: #fff7c2; color: #0a0a0a; }
+  ::selection { background: #A8347C; color: #FFFEFE; }
 </style>
 </head>
 <body>
@@ -27,5 +28,7 @@
 <script type="text/babel" src="wireframe-thumbs.jsx"></script>
 <script type="text/babel" src="landing-content.jsx"></script>
 <script type="text/babel" src="landing-app.jsx"></script>
+<script src="pixel-trail.js"></script>
+<script>initPixelTrail({ pixelSize: 14, fadeDuration: 1200, color: '#A8347C', opacity: 0.4, gooStrength: 4 });</script>
 </body>
 </html>

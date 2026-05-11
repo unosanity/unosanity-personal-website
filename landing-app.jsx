@@ -1,12 +1,13 @@
-// Full functional Prophetgram landing — responsive via CSS media queries (not JS)
-// Header: PROPHETGRAM | UNOSANITY (UNOSANITY half links to https://unosanity.uno)
+// Prophetgram landing — ported to the Kirill Skurikhin / unosanity system
+// Ice-white field, navy ink, bougainvillea accent. Quiet, hairline, mono+serif.
 
 const { useState, useEffect } = React;
 
-const ink = "#0a0a0a";
-const paper = "#f4f1ea";
-const dim = "#9a958a";
-const accent = "#fff7c2";
+const ink = "#0E1A4D";
+const paper = "#F4F7FB";
+const pure = "#FFFEFE";
+const mute = "#6A739E";
+const accent = "#A8347C";
 
 function detectLocale() {
   if (typeof window === "undefined") return "en";
@@ -20,185 +21,184 @@ function detectLocale() {
   return "en";
 }
 
-// Single global stylesheet — drives all responsive behavior via media queries.
 function ResponsiveStyles() {
   return (
     <style>{`
       .pg-shell {
         position: relative;
         min-height: 100dvh;
-        background: ${ink};
-        color: ${paper};
-        font-family: "Inter", -apple-system, sans-serif;
+        background: ${paper};
+        color: ${ink};
+        font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-weight: 300;
         overflow: hidden;
-      }
-      .pg-vignette {
-        position: absolute; inset: 0; pointer-events: none;
-        background: radial-gradient(ellipse at 30% 40%, rgba(255,247,194,0.06), transparent 60%);
+        border: 1px solid ${ink};
       }
 
       /* ============ HEADER ============ */
       .pg-header {
         position: relative; z-index: 5;
-        padding: 24px 48px 0;
+        padding: 16px 30px;
         display: flex; justify-content: space-between; align-items: center;
         gap: 16px; flex-wrap: wrap;
-        font-family: ui-monospace, "SF Mono", monospace;
-        font-size: 11px; letter-spacing: 0.12em;
-        text-transform: uppercase; color: ${dim};
+        font-family: "DM Mono", monospace;
+        font-size: 12px; letter-spacing: 0.02em;
+        color: ${mute};
+        border-bottom: 1px solid ${ink};
       }
       .pg-brand { display: flex; align-items: center; gap: 12px; }
       .pg-dot {
-        width: 10px; height: 10px; background: ${accent};
+        width: 8px; height: 8px; background: ${accent};
         border-radius: 50%; flex-shrink: 0;
       }
-      .pg-brand-text { display: flex; align-items: center; gap: 10px; letter-spacing: 0.2em; }
-      .pg-brand-text .pg-name { color: ${paper}; }
-      .pg-brand-text .pg-pipe { color: ${dim}; opacity: 0.6; }
+      .pg-brand-text { display: flex; align-items: center; gap: 10px; }
+      .pg-brand-text .pg-name { color: ${ink}; font-weight: 500; }
+      .pg-brand-text .pg-pipe { color: ${mute}; opacity: 0.6; }
       .pg-brand-text a {
-        color: ${dim}; text-decoration: none; letter-spacing: 0.2em;
-        border-bottom: 1px solid ${dim}55; padding-bottom: 1px;
-        transition: color 120ms, border-color 120ms;
+        color: ${mute}; text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: color 250ms cubic-bezier(0.165,0.84,0.44,1), border-color 250ms cubic-bezier(0.165,0.84,0.44,1);
+        padding-bottom: 1px;
       }
-      .pg-brand-text a:hover { color: ${paper}; border-bottom-color: ${paper}; }
+      .pg-brand-text a:hover { color: ${accent}; border-bottom-color: ${accent}; }
 
-      .pg-nav { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
-      .pg-nav .pg-nav-meta { display: inline; }
+      .pg-nav { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+      .pg-nav .pg-nav-meta { display: inline; letter-spacing: 0.06em; }
       .pg-lang-btn {
-        background: transparent; border: 1px solid ${dim}55; color: ${paper};
-        font: inherit; cursor: pointer; padding: 4px 10px; letter-spacing: 0.2em;
+        background: transparent; border: 1px solid ${ink}; color: ${ink};
+        font: inherit; cursor: pointer; padding: 4px 10px; letter-spacing: 0.1em;
+        font-family: "DM Mono", monospace; font-size: 11px;
+        transition: background 250ms cubic-bezier(0.165,0.84,0.44,1), color 250ms cubic-bezier(0.165,0.84,0.44,1);
       }
-      .pg-lang-btn .pg-lang-other { color: ${dim}; }
+      .pg-lang-btn:hover { background: ${ink}; color: ${paper}; }
+      .pg-lang-btn:hover .pg-lang-other { color: ${mute}; }
+      .pg-lang-btn .pg-lang-other { color: ${mute}; }
 
       /* ============ MAIN ============ */
-      .pg-main {
-        position: relative; z-index: 2;
-        min-height: 0;
-      }
+      .pg-main { position: relative; z-index: 2; }
 
-      .pg-hero { padding: 44px 48px 28px; max-width: 760px; }
+      .pg-hero { padding: 60px 30px 36px; max-width: 760px; }
       .pg-eyebrow {
-        font-family: ui-monospace, "SF Mono", monospace;
+        font-family: "DM Mono", monospace;
         font-size: 11px; letter-spacing: 0.18em;
-        text-transform: uppercase; color: ${dim};
-        margin-bottom: 14px;
+        text-transform: uppercase; color: ${mute};
+        margin-bottom: 22px;
       }
       .pg-h1 {
-        font-family: "Fraunces", "Iowan Old Style", Georgia, serif;
-        font-weight: 300; font-size: 96px; line-height: 0.88;
-        letter-spacing: -0.03em; margin: 0; color: ${paper};
+        font-family: "Newsreader", "Cormorant Garamond", Georgia, serif;
+        font-weight: 600; font-size: clamp(56px, 8vw, 96px);
+        line-height: 0.95;
+        letter-spacing: -0.02em;
+        margin: 0; color: ${ink};
+        text-wrap: balance;
       }
-      .pg-h1 .pg-italic { font-style: italic; font-weight: 300; color: ${accent}; }
+      .pg-h1 .pg-italic { font-style: italic; font-weight: 600; color: ${accent}; }
       .pg-body {
-        margin-top: 20px; font-size: 16px; line-height: 1.5;
-        color: ${dim}; max-width: 480px;
+        margin-top: 24px; font-size: 14px; line-height: 1.65;
+        color: ${ink}; max-width: 540px; font-family: "DM Mono", monospace;
+        font-weight: 300;
       }
 
-      /* Wireframe panel — desktop: absolute right; mobile: in flow */
+      /* Wireframe panel */
       .pg-panel {
-        position: absolute; top: 132px; right: 48px;
+        position: absolute; top: 64px; right: 30px;
         width: 580px; padding: 18px;
-        border: 1px solid ${dim}33;
+        border: 1px solid ${ink};
+        background: ${pure};
       }
-      .pg-corner { position: absolute; width: 14px; height: 14px; }
-      .pg-corner.tl { top: -1px; left: -1px; border-top: 1px solid ${accent}; border-left: 1px solid ${accent}; }
-      .pg-corner.tr { top: -1px; right: -1px; border-top: 1px solid ${accent}; border-right: 1px solid ${accent}; }
-      .pg-corner.bl { bottom: -1px; left: -1px; border-bottom: 1px solid ${accent}; border-left: 1px solid ${accent}; }
-      .pg-corner.br { bottom: -1px; right: -1px; border-bottom: 1px solid ${accent}; border-right: 1px solid ${accent}; }
 
       .pg-panel-head {
-        font-family: ui-monospace, "SF Mono", monospace;
-        font-size: 10px; letter-spacing: 0.18em;
-        text-transform: uppercase; color: ${dim};
+        font-family: "DM Mono", monospace;
+        font-size: 10px; letter-spacing: 0.2em;
+        text-transform: uppercase; color: ${mute};
         display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+        padding-bottom: 10px;
+        border-bottom: 1px solid ${ink};
       }
       .pg-panel-head .pg-cards { color: ${accent}; }
 
       .pg-grid {
-        margin-top: 10px;
-        display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
+        margin-top: 14px;
+        display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
       }
-      .pg-cell { position: relative; color: ${paper}; }
+      .pg-cell { position: relative; color: ${ink}; }
       .pg-cell-num {
-        font-family: ui-monospace, monospace; font-size: 9px;
-        color: ${dim}; margin-bottom: 5px; letter-spacing: 0.1em;
+        font-family: "DM Mono", monospace; font-size: 9px;
+        color: ${mute}; margin-bottom: 5px; letter-spacing: 0.12em;
       }
       .pg-cell-frame {
-        background: #101010; border: 1px solid ${dim}55;
+        background: ${paper}; border: 1px solid ${ink};
         padding: 4px; aspect-ratio: 200 / 130;
       }
       .pg-cell-title {
-        font-size: 10px; margin-top: 6px; line-height: 1.25; color: ${paper};
+        font-size: 10px; margin-top: 6px; line-height: 1.25; color: ${ink};
+        font-family: "DM Mono", monospace;
       }
 
       .pg-how {
-        margin-top: 10px; border-top: 1px solid ${dim}33; padding-top: 8px;
+        margin-top: 14px; border-top: 1px solid ${ink}; padding-top: 12px;
       }
       .pg-how-label {
-        font-family: ui-monospace, monospace; font-size: 10px;
-        letter-spacing: 0.15em; text-transform: uppercase;
-        color: ${dim}; margin-bottom: 8px;
+        font-family: "DM Mono", monospace; font-size: 10px;
+        letter-spacing: 0.2em; text-transform: uppercase;
+        color: ${mute}; margin-bottom: 10px;
       }
       .pg-how-grid {
-        display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-        font-size: 11px; line-height: 1.4;
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+        font-size: 11px; line-height: 1.5; color: ${ink};
       }
-      .pg-how-grid .pg-num { color: ${accent}; }
+      .pg-how-grid .pg-num { color: ${accent}; font-weight: 500; }
 
       /* ============ FOOTER ============ */
       .pg-footer {
-        position: absolute; bottom: 16px; left: 48px; right: 48px;
-        padding-top: 12px; border-top: 1px solid ${dim}33;
+        position: absolute; bottom: 16px; left: 30px; right: 30px;
+        padding-top: 14px; border-top: 1px solid ${ink};
         display: flex; justify-content: space-between; align-items: center;
-        font-family: ui-monospace, monospace; font-size: 10px;
-        letter-spacing: 0.16em; text-transform: uppercase; color: ${dim};
+        font-family: "DM Mono", monospace; font-size: 11px;
+        letter-spacing: 0.06em; color: ${mute};
       }
-      .pg-footer .pg-status { color: ${paper}; }
+      .pg-footer .pg-status { color: ${accent}; }
 
       /* ============ TABLET ============ */
       @media (max-width: 1099px) {
         .pg-main { min-height: 0; }
-        .pg-hero { padding: 48px 36px 24px; max-width: none; }
-        .pg-h1 { font-size: clamp(68px, 9vw, 96px); }
+        .pg-hero { padding: 56px 30px 28px; max-width: none; }
         .pg-panel {
           position: relative; top: auto; right: auto;
-          width: auto; margin: 0 36px 36px;
+          width: auto; margin: 0 30px 30px;
         }
         .pg-footer {
           position: relative; bottom: auto; left: auto; right: auto;
-          margin: 0 36px 20px;
+          margin: 0 30px 24px;
         }
       }
 
       /* ============ MOBILE ============ */
       @media (max-width: 719px) {
-        .pg-header {
-          padding: 20px 20px 0;
-          gap: 12px;
-        }
-        .pg-nav { gap: 16px; }
+        .pg-header { padding: 14px 18px; gap: 12px; }
+        .pg-nav { gap: 14px; }
         .pg-nav .pg-nav-meta { display: none; }
         .pg-brand-text { font-size: 11px; gap: 8px; }
 
-        .pg-hero { padding: 40px 20px 32px; }
-        .pg-eyebrow { font-size: 10px; margin-bottom: 22px; }
-        .pg-h1 { font-size: clamp(48px, 13.5vw, 76px); }
-        .pg-body { margin-top: 26px; font-size: 15px; }
+        .pg-hero { padding: 40px 18px 30px; }
+        .pg-eyebrow { font-size: 10px; margin-bottom: 18px; }
+        .pg-h1 { font-size: clamp(44px, 13vw, 68px); }
+        .pg-body { margin-top: 22px; font-size: 13px; }
 
-        .pg-panel { margin: 0 20px 32px; padding: 20px 16px; }
+        .pg-panel { margin: 0 18px 30px; padding: 18px 14px; }
         .pg-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .pg-how-grid { grid-template-columns: 1fr 1fr; gap: 10px 14px; }
 
-        .pg-footer { margin: 0 20px 24px; padding-top: 14px; }
-        .pg-footer span { font-size: 9px; letter-spacing: 0.14em; }
+        .pg-footer { margin: 0 18px 20px; padding-top: 14px; }
+        .pg-footer span { font-size: 10px; }
       }
 
       @media (max-width: 380px) {
-        .pg-h1 { font-size: 44px; }
+        .pg-h1 { font-size: 40px; }
         .pg-grid { grid-template-columns: 1fr 1fr; }
       }
 
-      ::selection { background: ${accent}; color: ${ink}; }
+      ::selection { background: ${accent}; color: ${pure}; }
     `}</style>
   );
 }
@@ -209,9 +209,9 @@ function Header({ lang, setLang }) {
       <div className="pg-brand">
         <div className="pg-dot" aria-hidden="true"/>
         <div className="pg-brand-text">
-          <span className="pg-name">PROPHETGRAM</span>
+          <span className="pg-name">prophetgram</span>
           <span className="pg-pipe" aria-hidden="true">|</span>
-          <a href="https://unosanity.uno" target="_blank" rel="noopener noreferrer">UNOSANITY</a>
+          <a href="https://unosanity.uno" target="_blank" rel="noopener noreferrer">unosanity<em style={{fontStyle:'normal',color:accent}}>.</em>uno</a>
         </div>
       </div>
 
@@ -253,11 +253,6 @@ function WireframePanel({ lang }) {
   const t = COPY[lang];
   return (
     <section className="pg-panel">
-      <span className="pg-corner tl" aria-hidden="true"/>
-      <span className="pg-corner tr" aria-hidden="true"/>
-      <span className="pg-corner bl" aria-hidden="true"/>
-      <span className="pg-corner br" aria-hidden="true"/>
-
       <div className="pg-panel-head">
         <span>{t.fig} &nbsp; {t.figLabel}</span>
         <span className="pg-cards">{t.figRight}</span>
@@ -268,9 +263,9 @@ function WireframePanel({ lang }) {
           const Comp = WF[s.key];
           return (
             <div key={s.n} className="pg-cell">
-              <div className="pg-cell-num">FIG.{s.n}</div>
+              <div className="pg-cell-num">fig.{s.n}</div>
               <div className="pg-cell-frame">
-                <Comp w="100%" h="100%" stroke={paper} accent={accent}/>
+                <Comp w="100%" h="100%" stroke={ink} accent={accent}/>
               </div>
               <div className="pg-cell-title">{t.wireTitles[s.key]}</div>
             </div>
@@ -283,7 +278,7 @@ function WireframePanel({ lang }) {
         <div className="pg-how-grid">
           {t.steps.map((step, i) => (
             <div key={i}>
-              <span className="pg-num">{String(i + 1).padStart(2, "0")}·</span> {step}
+              <span className="pg-num">{String(i + 1).padStart(2, "0")} ·</span> {step}
             </div>
           ))}
         </div>
@@ -296,7 +291,7 @@ function Footer({ lang }) {
   const t = COPY[lang];
   return (
     <footer className="pg-footer">
-      <span>© MMXXVI · Prophetgram</span>
+      <span>© MMXXVI · prophetgram</span>
       <span className="pg-status">{t.footerCenter}</span>
     </footer>
   );
@@ -315,7 +310,6 @@ function App() {
   return (
     <div className="pg-shell">
       <ResponsiveStyles/>
-      <div className="pg-vignette" aria-hidden="true"/>
       <Header lang={lang} setLang={setLang}/>
       <main className="pg-main">
         <Hero lang={lang}/>

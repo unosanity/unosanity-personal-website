@@ -1,394 +1,536 @@
-<!DOCTYPE html><html lang="en"><head>
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>unosanity</title>
+<link rel="icon" href="assets/favicon.png">
 <link rel="stylesheet" href="style.css">
-<script src="tweaks-apply.js"></script>
 <style>
-/* ─── HOME SPECIFIC ─── */
+/* ─── HOME ─────────────────────────────────────────────── */
+
 .hero {
-  padding: 0 0 0 0;
-  border-bottom: 3px solid var(--ink);
-  overflow: hidden;
-  position: relative;
+  padding: 60px var(--gutter) 40px;
+  border-bottom: 1px solid var(--fg);
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 40px;
+  align-items: end;
 }
 
-.hero-name {
-  font-family: var(--display);
-  font-size: clamp(72px, 18vw, 240px);
-  line-height: 0.85;
-  letter-spacing: -2px;
-  color: var(--ink);
-  padding: 20px 24px 0;
-  display: block;
-  position: relative;
-  /* slight askew */
-  transform: rotate(-0.4deg);
-  transform-origin: left bottom;
-  word-break: break-word;
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 30px; padding: 44px 18px 32px; }
 }
 
-.hero-handle-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 4px 24px 18px;
-  border-top: 1px solid #bbb;
-  margin-top: 8px;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.hero-handle {
-  font-family: var(--display);
-  font-size: clamp(28px, 4vw, 56px);
-  letter-spacing: 8px;
-  color: #777;
-}
-
-.hero-year {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: #999;
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
-  padding-bottom: 4px;
+  color: var(--bougainvillea);
+  margin-bottom: 14px;
 }
 
-/* ─── CONTENT GRID ─── */
+.hero-h1 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(44px, 6.2vw, 84px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  max-width: 14ch;
+}
+.hero-h1 em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--bougainvillea);
+}
+
+.hero-meta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg-mute);
+  letter-spacing: 0.04em;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: end;
+  padding-bottom: 6px;
+  border-left: 1px solid var(--fg);
+  padding-left: 24px;
+}
+.hero-meta .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 4px 0;
+}
+.hero-meta .k { color: var(--fg-mute); text-transform: uppercase; letter-spacing: 0.16em; font-size: 11px; }
+.hero-meta .v { color: var(--fg); font-size: 14px; }
+
+@media (max-width: 900px) {
+  .hero-meta { border-left: none; border-top: 1px solid var(--fg); padding: 18px 0 0; }
+}
+
+/* ─── BIO + STATUS GRID ─────────────────────────────────── */
 .content-grid {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  border-bottom: 2px solid var(--ink);
+  grid-template-columns: 1.5fr 1fr;
+  border-bottom: 1px solid var(--fg);
 }
 
-@media (max-width: 820px) {
+@media (max-width: 900px) {
   .content-grid { grid-template-columns: 1fr; }
-  .bio-col { border-right: none !important; border-bottom: 2px solid var(--ink); }
+  .bio-col { border-right: none !important; border-bottom: 1px solid var(--fg); }
 }
 
 .bio-col {
-  padding: 32px 28px 40px;
-  border-right: 2px solid var(--ink);
+  padding: 36px var(--gutter) 40px;
+  border-right: 1px solid var(--fg);
 }
 
 .bio-intro {
-  font-size: 15px;
-  line-height: 1.75;
-  max-width: 600px;
-  margin-bottom: 28px;
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.55;
+  max-width: 56ch;
+  margin-bottom: 22px;
+  color: var(--fg);
+}
+.bio-intro strong { font-weight: 500; }
+.bio-intro em { font-style: normal; color: var(--bougainvillea); }
+
+.bio-secondary {
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.65;
+  max-width: 52ch;
+  color: var(--fg-soft);
+  margin-bottom: 30px;
 }
 
-.bio-intro strong { font-weight: 700; }
-
-.tagline-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+/* USP grid — 4-cell hairline frame with outline icons */
+.usp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--fg);
   margin-bottom: 32px;
 }
+.usp-cell {
+  padding: 22px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.usp-cell:nth-child(odd) { border-right: 1px solid var(--fg); }
+.usp-cell:nth-child(-n+2) { border-bottom: 1px solid var(--fg); }
 
-.tagline-item {
-  font-family: var(--display);
-  font-size: clamp(28px, 3.5vw, 48px);
-  letter-spacing: 3px;
-  line-height: 1.05;
-  border-top: 1px solid #ccc;
-  padding: 8px 0;
+.usp-cell img {
+  width: 96px;
+  height: auto;
+  margin-bottom: 4px;
 }
 
-.tagline-item:last-child { border-bottom: 1px solid #ccc; }
+.usp-cell h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--fg);
+}
 
-.tagline-item span {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: #999;
-  vertical-align: middle;
-  margin-right: 12px;
+.usp-cell p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--fg-soft);
+}
+
+.usp-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--fg-mute);
   text-transform: uppercase;
 }
 
-/* links row */
+@media (max-width: 600px) {
+  .usp-grid { grid-template-columns: 1fr; }
+  .usp-cell:nth-child(odd) { border-right: none; }
+  .usp-cell:nth-child(-n+3) { border-bottom: 1px solid var(--fg); }
+  .usp-cell { padding: 18px 18px 22px; }
+  .usp-cell img { width: 80px; }
+}
+
+/* external links row */
 .links-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0;
-  margin-top: 8px;
+  gap: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--fg);
 }
 
 .ext-link {
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 8px 18px 8px 0;
-  margin-right: 18px;
-  border-bottom: 2px solid var(--ink);
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--fg);
   text-decoration: none;
-  transition: color 0.1s;
+  padding-right: 16px;
+  transition: color var(--t-base) var(--ease);
 }
+.ext-link::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 16px; bottom: -4px;
+  height: 1px;
+  background: var(--fg);
+  transition: transform var(--t-base) var(--ease), background-color var(--t-base) var(--ease);
+}
+.ext-link::before {
+  content: "";
+  position: absolute;
+  top: 4px; right: 0;
+  width: 7px; height: 7px;
+  background: url(assets/icons/link-arrow--small-14.png) center/7px no-repeat;
+  transition: transform var(--t-base) var(--ease);
+}
+.ext-link:hover { color: var(--bougainvillea); }
+.ext-link:hover::after { background: var(--bougainvillea); transform: translateY(-3px); }
+.ext-link:hover::before { transform: translate(3px, -3px); }
 
-.ext-link:hover { color: var(--red); border-color: var(--red); }
-
-/* ─── STATUS SIDEBAR ─── */
+/* ─── STATUS SIDEBAR ───────────────────────────────────── */
 .status-col {
-  padding: 28px 22px;
-}
-
-.status-block {
-  margin-bottom: 28px;
+  padding: 36px var(--gutter) 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .status-block-title {
-  font-size: 9px;
-  letter-spacing: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #888;
-  border-bottom: 1px solid #bbb;
-  padding-bottom: 6px;
-  margin-bottom: 10px;
+  color: var(--fg-mute);
+  border-bottom: 1px solid var(--fg);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .status-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
-  font-size: 12px;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
   line-height: 1.5;
+  color: var(--fg);
 }
 
 .status-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--ink);
+  width: 7px;
+  height: 7px;
+  background: var(--fg);
   flex-shrink: 0;
-  margin-top: 6px;
+  margin-top: 7px;
 }
-
-.status-dot.red { background: var(--red); }
+.status-dot.accent { background: var(--bougainvillea); }
 
 .now-playing {
-  background: var(--ink);
-  color: var(--bg);
-  padding: 12px 14px;
+  border: 1px solid var(--fg);
+  padding: 14px 16px;
   margin-top: 4px;
+  background: var(--bg-pure);
 }
-
 .now-playing .label {
-  font-size: 8px;
-  letter-spacing: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #888;
-  margin-bottom: 4px;
+  color: var(--fg-mute);
+  margin-bottom: 6px;
 }
-
 .now-playing .track {
-  font-size: 12px;
+  font-family: var(--font-serif);
   font-style: italic;
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--fg);
+  line-height: 1.3;
 }
 
-/* ─── RECENT NOTES STRIP ─── */
+/* ─── RECENT NOTES ─────────────────────────────────────── */
 .recent-notes {
-  padding: 20px 28px;
+  padding: 30px var(--gutter) 32px;
 }
 
 .recent-notes-header {
   display: flex;
   align-items: baseline;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--fg);
+  padding-bottom: 12px;
+  flex-wrap: wrap;
 }
-
 .recent-notes-header h2 {
-  font-family: var(--display);
-  font-size: 32px;
-  letter-spacing: 3px;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1;
+  color: var(--fg);
 }
-
-.recent-notes-header a {
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--red);
-  text-decoration: underline;
+.recent-notes-header .all-notes {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
 }
 
 .note-row {
   display: grid;
-  grid-template-columns: 90px 1fr auto;
-  gap: 16px;
+  grid-template-columns: 110px 1fr auto;
+  gap: 20px;
   align-items: baseline;
-  padding: 10px 0;
-  border-top: 1px solid #ccc;
+  padding: 16px 0;
+  border-top: 1px solid color-mix(in oklab, var(--fg) 25%, var(--bg));
   text-decoration: none;
-  color: var(--ink);
-  transition: background 0.1s;
+  color: var(--fg);
+  transition: background var(--t-base) var(--ease);
+}
+.note-row:hover { background: var(--bg-frost); }
+.note-row:first-of-type { border-top-color: transparent; padding-top: 4px; }
+
+.note-row .note-date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-mute);
+  letter-spacing: 0.04em;
 }
 
-.note-row:hover { background: rgba(0,0,0,0.03); }
-.note-row:hover .note-title { text-decoration: underline; }
-
-.note-date {
-  font-size: 10px;
-  color: #999;
-  letter-spacing: 1px;
+.note-row .note-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.3;
+  color: var(--fg);
+  transition: color var(--t-base) var(--ease);
 }
 
-.note-title { font-size: 13px; }
+.note-row:hover .note-title { color: var(--bougainvillea); }
 
-.note-tags { font-size: 9px; color: #aaa; letter-spacing: 1px; text-transform: uppercase; }
+.note-row .note-tags {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--fg-mute);
+  text-align: right;
+}
 
-/* ─── MOBILE TUNING ─── */
-@media (max-width: 600px) {
-  .hero-name { padding: 16px 16px 0; letter-spacing: -1px; }
-  .hero-handle-row { padding: 4px 16px 14px; }
-  .hero-year { font-size: 9px; letter-spacing: 1.5px; }
-
-  .bio-col { padding: 24px 18px 30px; }
-  .status-col { padding: 22px 18px; }
-
-  .tagline-stack { margin-bottom: 24px; }
-  .tagline-item { letter-spacing: 2px; padding: 10px 0; }
-  .tagline-item span { margin-right: 8px; }
-
-  .bio-intro { font-size: 14px; line-height: 1.7; margin-bottom: 22px; }
-
-  .links-row { gap: 0; }
-  .ext-link {
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    padding: 8px 14px 8px 0;
-    margin-right: 14px;
-  }
-
-  .recent-notes { padding: 18px 18px; }
-  .recent-notes-header h2 { font-size: 26px; letter-spacing: 2px; }
-  .recent-notes-header { flex-wrap: wrap; gap: 8px; }
-
+@media (max-width: 720px) {
   .note-row {
     grid-template-columns: 1fr;
     gap: 4px;
-    padding: 12px 0;
+    padding: 14px 0;
   }
-  .note-date { font-size: 9px; }
-  .note-title { font-size: 13px; }
-
-  .now-playing { padding: 10px 12px; }
+  .note-row .note-tags { text-align: left; }
 }
 
-@media (max-width: 380px) {
-  .hero-name { font-size: clamp(60px, 17vw, 100px); }
-  .nav-logo { font-size: 20px; letter-spacing: 2px; padding: 0 12px; }
+/* ─── FOOTER ────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--fg);
+  padding: 16px var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-mute);
+  letter-spacing: 0.06em;
+  flex-wrap: wrap;
+  gap: 12px;
 }
+.site-footer em { font-style: normal; color: var(--bougainvillea); }
 </style>
 </head>
-<body data-cc-id="cc-1" style="cursor: crosshair;">
+<body>
 
-<nav class="site-nav">
-  <a class="nav-logo" href="index.html">UNOSANITY</a>
-  <div class="nav-links">
-    <a href="index.html" class="active">Index</a>
-    <a href="projects.html">Projects</a>
-    <a href="case-studies.html">Work</a>
-    <a href="notes.html">Notes</a>
-  </div>
-</nav>
+<div class="frame">
 
-
-
-<main>
-
-  <section class="hero">
-    <span class="hero-name">Hi, I'm Kirill...</span>
-    <div class="hero-handle-row">
-      <span class="hero-year">est. 2026 &nbsp;·&nbsp; earth</span>
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">unosanity<em>.</em>uno</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">index</a>
+      <a href="projects.html">projects</a>
+      <a href="case-studies.html">work</a>
+      <a href="notes.html">notes</a>
     </div>
-  </section>
+    <a class="nav-email" href="https://t.me/kaysane3x6">sanity@unosanity<em>.</em>uno</a>
+  </nav>
 
-  <div class="content-grid">
-    <div class="bio-col">
-
-      <div class="tagline-stack">
-        <div class="tagline-item"><span>01</span>Content Specialist</div>
-        <div class="tagline-item"><span>02</span>Automation Builder</div>
-        <div class="tagline-item"><span>03</span>Problem Solver</div>
-      </div>
-
-      <p class="bio-intro">
-        I make things for people, by people. I also write, like... obsessively about everything and anything.
-      </p>
-
-      <p class="bio-intro" style="font-size: 12px; color: #666; max-width: 540px;">
-        If it's useful or interesting, it ends up here. This is a sanctum free from the algorithm, slop, politics or any other bullshit. Just pure vibes.</p>
-
-
-
-      <div class="links-row">
-        <a class="ext-link" href="https://github.com/unosanity" target="_blank">GitHub</a>
-        <a class="ext-link" href="https://instagram.com/unosanity" target="_blank">Instagram</a>
-        <a class="ext-link" href="https://t.me/kaysane3x6" target="_blank">Telegram</a>
-      </div>
-
-    </div>
-
-    <div class="status-col">
-
-      <div class="status-block">
-        <div class="status-block-title">Currently</div>
-        <div class="status-item">
-          <div class="status-dot red"></div>
-          <div>Building a mostly-automated content department</div>
-        </div>
-        <div class="status-item">
-          <div class="status-dot"></div>
-          <div>Training my own LLM to replace me</div>
-        </div>
-        <div class="status-item">
-          <div class="status-dot"></div>
-          <div>Somewhere on the internet</div>
-        </div>
-      </div>
-
-      <div class="status-block">
-        <div class="status-block-title">Recently</div>
-        <div class="status-item">
-          <div class="status-dot"></div>
-          <div>Made this website</div>
-        </div>
-        <div class="status-item">
-          <div class="status-dot"></div>
-          <div>Read a lot. Retained 40% of it.</div>
-        </div>
-      </div>
-
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span>est. 2026</span><span class="dot">·</span>
+      <span>somewhere on the internet</span><span class="dot">·</span>
+      <span>writing, building, listening</span><span class="dot">·</span>
+      <span>a sanctum free from the algorithm</span><span class="dot">·</span>
+      <span>est. 2026</span><span class="dot">·</span>
+      <span>somewhere on the internet</span><span class="dot">·</span>
+      <span>writing, building, listening</span><span class="dot">·</span>
+      <span>a sanctum free from the algorithm</span><span class="dot">·</span>
     </div>
   </div>
 
-  <section class="recent-notes">
-    <div class="recent-notes-header">
-      <h2>Recent Notes</h2>
-      <a href="notes.html">All notes →</a>
+  <main>
+
+    <section class="hero">
+      <div>
+        <div class="hero-eyebrow">Hi,</div>
+        <h1 class="hero-h1">I'm <em>Kirill</em>. I make things for people, by people.</h1>
+      </div>
+      <div class="hero-meta">
+        <div class="row"><span class="k">Est.</span><span class="v">2026</span></div>
+        <div class="row"><span class="k">Where</span><span class="v">earth</span></div>
+        <div class="row"><span class="k">Doing</span><span class="v">content · automation</span></div>
+        <div class="row"><span class="k">Status</span><span class="v"><span style="display:inline-block;width:6px;height:6px;background:var(--bougainvillea);margin-right:6px;vertical-align:middle"></span>innovating <a href="https://prjctr.com" target="_blank" rel="noopener" class="ks-link">projector online institute</a>'s content pipelines, <a href="https://prjctr.com/library" target="_blank" rel="noopener" class="ks-link">managing the library</a>, vibing.</span></div>
+      </div>
+    </section>
+
+    <div class="content-grid">
+
+      <section class="bio-col">
+
+        <p class="bio-intro">
+          I write, like… <em>obsessively</em>, about everything and anything. I build the systems that turn that writing — and other people's — into shippable work.
+        </p>
+
+        <p class="bio-secondary">
+          If it's useful or interesting, it ends up here. This is a sanctum free from the algorithm, slop, politics or any other bullshit. Just pure vibes.
+        </p>
+
+        <div class="usp-grid">
+          <div class="usp-cell">
+            <img src="assets/icons/icon-whitespace.svg" alt="">
+            <span class="usp-num">01</span>
+            <h3>Your whitespace is safe with me.</h3>
+            <p>Content strategy without filler. I plan, write and ghostwrite — and I cut anything that doesn't earn its column-inch.</p>
+          </div>
+          <div class="usp-cell">
+            <img src="assets/icons/icon-strong.svg" alt="">
+            <span class="usp-num">02</span>
+            <h3>Strong, reliable end-products.</h3>
+            <p>Pipelines, plugins, tools. Built end-to-end, with a human at the bottleneck where it counts and not where it doesn't.</p>
+          </div>
+          <div class="usp-cell">
+            <img src="assets/icons/icon-call.svg" alt="">
+            <span class="usp-num">03</span>
+            <h3>Easy communication.</h3>
+            <p>First-person, plain, calm. No hype, no exclamation marks. You always know what you're getting and when.</p>
+          </div>
+          <div class="usp-cell">
+            <img src="assets/icons/icon-ok.svg" alt="">
+            <span class="usp-num">04</span>
+            <h3>Problems solved, not punted.</h3>
+            <p>If something is broken, I'd rather sit with it for a week and ship the right fix than patch around it forever.</p>
+          </div>
+        </div>
+
+        <div class="links-row">
+          <a class="ext-link" href="https://github.com/unosanity" target="_blank" rel="noopener">github</a>
+          <a class="ext-link" href="https://instagram.com/unosanity" target="_blank" rel="noopener">instagram</a>
+          <a class="ext-link" href="https://t.me/kaysane3x6" target="_blank" rel="noopener">telegram</a>
+        </div>
+
+      </section>
+
+      <aside class="status-col">
+
+        <div class="status-block">
+          <div class="status-block-title">Currently</div>
+          <div class="status-item">
+            <div class="status-dot accent"></div>
+            <div>Building a mostly-automated content department.</div>
+          </div>
+          <div class="status-item">
+            <div class="status-dot"></div>
+            <div>Training my own LLM to replace me.</div>
+          </div>
+          <div class="status-item">
+            <div class="status-dot"></div>
+            <div>Somewhere on the internet.</div>
+          </div>
+        </div>
+
+        <div class="status-block">
+          <div class="status-block-title">Recently</div>
+          <div class="status-item">
+            <div class="status-dot"></div>
+            <div>Redesigned this website two weeks after I made it.</div>
+          </div>
+          <div class="status-item">
+            <div class="status-dot"></div>
+            <div>Made a giant leap towards replacing myself with AI.</div>
+          </div>
+        </div>
+
+        <div class="now-playing">
+          <div class="label">In rotation</div>
+          <div class="track">Drafting articles in voice memo while walking</div>
+        </div>
+
+      </aside>
+
     </div>
 
-    <a class="note-row" href="notes.html#ai-inference-human-belongs">
-      <span class="note-date">Apr 30, 2026</span>
-      <span class="note-title">My current thoughts on AI inference — and where a human actually belongs in this</span>
-      <span class="note-tags">#AI · #inference · #content</span>
-    </a>
+    <section class="recent-notes">
+      <div class="recent-notes-header">
+        <h2>recent notes</h2>
+        <a class="ks-link all-notes" href="notes.html">all notes →</a>
+      </div>
 
-    <a class="note-row" href="notes.html#desktop-control-plugin-creation">
-      <span class="note-date">Apr 27, 2026</span>
-      <span class="note-title">Desktop Control Plugin Creation</span>
-      <span class="note-tags">#reference · #software · #AI</span>
-    </a>
+      <a class="note-row" href="notes.html#ghostwrite-for-your-authors">
+        <span class="note-date">May 08, 2026</span>
+        <span class="note-title">Why you should ghostwrite for your authors as a content person</span>
+        <span class="note-tags">#content · #ai · #workflow</span>
+      </a>
 
-  </section>
+      <a class="note-row" href="notes.html#ai-inference-human-belongs">
+        <span class="note-date">Apr 30, 2026</span>
+        <span class="note-title">My current thoughts on AI inference — and where a human actually belongs in this</span>
+        <span class="note-tags">#ai · #inference · #content</span>
+      </a>
 
-</main>
+      <a class="note-row" href="notes.html#desktop-control-plugin-creation">
+        <span class="note-date">Apr 27, 2026</span>
+        <span class="note-title">Desktop Control Plugin Creation</span>
+        <span class="note-tags">#reference · #software · #ai</span>
+      </a>
 
+    </section>
+
+    <footer class="site-footer">
+      <span>© MMXXVI · unosanity<em>.</em>uno</span>
+      <span>monospace · hairlines · bougainvillea</span>
+    </footer>
+
+  </main>
+</div>
 
 <script src="pixel-trail.js"></script>
-<script>initPixelTrail({ pixelSize: 16, fadeDuration: 1200, color: '#0f0f0f', opacity: 0.9, gooStrength: 4 });</script>
-</body></html>
+<script>
+  initPixelTrail({
+    pixelSize: 14,
+    fadeDuration: 1200,
+    color: '#A8347C',
+    opacity: 0.45,
+    gooStrength: 4
+  });
+</script>
+</body>
+</html>

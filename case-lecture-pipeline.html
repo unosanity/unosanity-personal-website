@@ -4,388 +4,326 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Case Study Mining From Transcripts — unosanity</title>
+<link rel="icon" href="assets/favicon.png">
 <link rel="stylesheet" href="style.css">
-<script src="tweaks-apply.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
-.article-shell {
-  border-bottom: 3px solid var(--ink);
-}
+.article-shell { border-bottom: 1px solid var(--fg); }
 
-.article-header {
-  padding: 32px 28px 0;
-  border-bottom: 2px solid var(--ink);
+.article-meta-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 30px;
+  border-bottom: 1px solid var(--fg);
+  flex-wrap: wrap; gap: 12px;
 }
-
-.article-header-row {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  padding: 10px 0;
-  border-top: 1px solid #ccc;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-
+.article-meta-left { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
 .article-date {
-  font-size: 10px;
-  letter-spacing: 1px;
-  color: #999;
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--fg-mute);
 }
+.article-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.article-back-top {
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--fg-mute);
+  border-bottom: 1px solid var(--fg-mute);
+  transition: color var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
+}
+.article-back-top:hover { color: var(--bougainvillea); border-color: var(--bougainvillea); }
 
-.article-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-.article-tags .tag-pill { font-size: 8px; }
-
-/* ─── ARTICLE BODY ─── */
+/* article body */
 .article-body {
-  padding: 32px 28px 48px;
-  max-width: 720px;
+  padding: 60px 30px 80px;
+  max-width: 78ch;
+  margin: 0 auto;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--fg);
 }
 
 .article-body h1 {
-  font-family: var(--display);
-  font-size: 42px;
-  letter-spacing: 2px;
-  margin-bottom: 16px;
-  line-height: 1;
-  border-bottom: 3px solid var(--ink);
-  padding-bottom: 10px;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(40px, 5.5vw, 72px);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+  color: var(--fg);
+  text-wrap: balance;
 }
 
 .article-body h2 {
-  font-family: var(--display);
-  font-size: 28px;
-  letter-spacing: 2px;
-  margin: 28px 0 10px;
-  line-height: 1.1;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.15;
+  margin: 2em 0 0.6em;
+  color: var(--fg);
+}
+.article-body h2::before {
+  content: "§ ";
+  color: var(--bougainvillea);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.7em;
+  vertical-align: 0.15em;
 }
 
 .article-body h3 {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  margin: 22px 0 8px;
-  color: #666;
+  margin: 1.8em 0 0.6em;
+  color: var(--fg-mute);
 }
 
-.article-body p {
-  font-size: 13px;
-  line-height: 1.8;
-  margin-bottom: 16px;
-  max-width: 640px;
-}
+.article-body p { margin-bottom: 1.2em; }
+.article-body strong { font-weight: 500; color: var(--fg); }
+.article-body em { font-style: italic; }
+.article-body a { color: var(--fg); border-bottom: 1px solid var(--bougainvillea); }
+.article-body a:hover { color: var(--bougainvillea); }
 
-.article-body ul, .article-body ol {
-  padding-left: 20px;
-  margin-bottom: 16px;
-}
-
-.article-body li {
-  font-size: 13px;
-  line-height: 1.8;
-  margin-bottom: 4px;
-}
-
-.article-body a { text-decoration: underline; text-underline-offset: 2px; }
-.article-body a:hover { color: var(--red); }
+.article-body ul, .article-body ol { padding-left: 1.4em; margin-bottom: 1.2em; }
+.article-body li { margin-bottom: 0.4em; }
+.article-body li::marker { color: var(--bougainvillea); }
 
 .article-body blockquote {
-  border-left: 3px solid var(--ink);
-  padding: 8px 0 8px 18px;
-  margin: 20px 0;
-  color: #555;
+  border-left: 2px solid var(--bougainvillea);
+  padding: 8px 18px;
+  margin: 1.6em 0;
+  background: color-mix(in oklab, var(--bougainvillea) 5%, var(--bg));
+  color: var(--fg-soft);
   font-style: italic;
 }
 
 .article-body code {
-  font-family: var(--mono);
-  font-size: 11px;
-  background: var(--ink);
-  color: #b8f500;
-  padding: 1px 5px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-frost);
+  border: 1px solid color-mix(in oklab, var(--fg) 20%, var(--bg));
+  padding: 1px 6px;
+  color: var(--bougainvillea-d);
 }
 
 .article-body pre {
-  background: var(--ink);
-  color: #d0d0d0;
-  padding: 18px 20px;
+  background: var(--bg-frost);
+  border: 1px solid var(--fg);
+  padding: 16px 20px;
   overflow-x: auto;
-  margin: 16px 0;
-  border: none;
+  margin: 1.4em 0;
 }
-
-.article-body pre code {
-  background: none;
-  color: inherit;
-  padding: 0;
-  font-size: 11px;
-  line-height: 1.7;
-}
+.article-body pre code { background: none; border: none; padding: 0; color: var(--fg); font-size: 13px; line-height: 1.65; }
 
 .article-body hr {
   border: none;
-  border-top: 2px solid var(--ink);
-  margin: 28px 0;
+  border-top: 1px dashed color-mix(in oklab, var(--fg) 40%, var(--bg));
+  margin: 2.4em 0;
 }
-
-.article-body strong { font-weight: 700; }
-.article-body em { font-style: italic; }
 
 .article-body table {
   width: 100%;
   border-collapse: collapse;
-  margin: 16px 0;
-  font-size: 12px;
+  border: 1px solid var(--fg);
+  margin: 1.4em 0;
+  font-size: 13px;
 }
-
 .article-body th, .article-body td {
-  padding: 8px 10px;
-  border: 1px solid #c9c5b8;
+  padding: 9px 12px;
+  border: 1px solid color-mix(in oklab, var(--fg) 25%, var(--bg));
   text-align: left;
+  vertical-align: top;
 }
-
 .article-body th {
-  background: var(--ink);
-  color: var(--bg);
-  font-weight: 700;
-  letter-spacing: 1px;
+  background: var(--bg-frost);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-size: 10px;
 }
 
-/* ─── PIPELINE DIAGRAM ─── */
+/* ─── PIPELINE DIAGRAM — re-skinned ─── */
 .pipeline-diagram {
-  border: 2px solid var(--ink);
-  padding: 20px 16px 16px;
-  margin: 20px 0;
+  border: 1px solid var(--fg);
+  padding: 28px 22px 22px;
+  margin: 2em 0;
   background: var(--bg);
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
   line-height: 1.5;
-  max-width: 640px;
 }
 .pipeline-diagram-title {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #888;
-  margin-bottom: 16px;
+  color: var(--fg-mute);
+  margin-bottom: 22px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in oklab, var(--fg) 30%, var(--bg));
 }
-.pipeline-row {
-  display: flex;
-  align-items: stretch;
-  gap: 0;
-  margin-bottom: 2px;
-}
-.pipeline-row:last-child { margin-bottom: 0; }
+.pipeline-row { display: flex; gap: 0; margin-bottom: 4px; }
 .pipeline-lane {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 0 6px;
+  padding: 0 10px;
 }
-.pipeline-lane + .pipeline-lane {
-  border-left: 2px solid var(--ink);
-}
+.pipeline-lane + .pipeline-lane { border-left: 1px solid var(--fg); }
 .pipeline-node {
-  border: 2px solid var(--ink);
-  padding: 7px 8px;
+  border: 1px solid var(--fg);
+  padding: 10px 10px;
   text-align: center;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.5px;
-  color: var(--ink);
-  background: var(--bg);
-  line-height: 1.3;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg);
+  background: var(--bg-pure);
+  line-height: 1.35;
 }
-.pipeline-node.node-input {
-  background: var(--ink);
-  color: var(--bg);
-  font-weight: 700;
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
+.pipeline-node + .pipeline-node { margin-top: 8px; }
+.pipeline-node.node-input,
 .pipeline-node.node-output {
-  background: var(--ink);
+  background: var(--fg);
   color: var(--bg);
-  font-weight: 700;
-  font-size: 9px;
-  letter-spacing: 1.5px;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 .pipeline-node.node-skill {
   border-style: dashed;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ink);
 }
 .pipeline-node.node-product {
-  background: var(--ink);
-  color: #b8f500;
-  font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 1px;
+  background: var(--fg);
+  color: var(--bg);
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+.pipeline-node.node-product .node-sub { color: color-mix(in oklab, var(--bougainvillea) 70%, var(--bg)); }
 .pipeline-node.node-human {
-  border-style: double;
-  border-width: 3px;
+  border-width: 1px;
+  border-color: var(--bougainvillea);
+  color: var(--bougainvillea);
   font-style: italic;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  background: color-mix(in oklab, var(--bougainvillea) 6%, var(--bg));
 }
 .pipeline-node .node-sub {
   display: block;
   font-weight: 400;
   font-style: normal;
   font-size: 9px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.04em;
   text-transform: none;
-  color: #888;
-  margin-top: 2px;
+  color: var(--fg-mute);
+  margin-top: 4px;
 }
 .pipeline-node.node-input .node-sub,
-.pipeline-node.node-output .node-sub,
-.pipeline-node.node-product .node-sub {
-  color: #aaa;
-}
-.pipeline-node.node-skill .node-sub {
-  color: #666;
-}
+.pipeline-node.node-output .node-sub { color: color-mix(in oklab, var(--bg) 70%, var(--fg)); }
+
 .pipeline-arrow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 3px 0;
-  color: var(--ink);
+  display: flex; justify-content: center; align-items: center;
+  padding: 5px 0;
+  color: var(--fg);
   font-size: 14px;
   line-height: 1;
 }
 .pipeline-converge {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 6px 0 4px;
+  display: flex; justify-content: center; align-items: center;
+  padding: 8px 0 6px;
   position: relative;
 }
 .pipeline-converge::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 25%;
-  right: 25%;
-  height: 2px;
-  background: var(--ink);
+  top: 0; left: 25%; right: 25%;
+  height: 1px;
+  background: var(--fg);
 }
 .pipeline-converge-arrow {
-  width: 0;
-  height: 0;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-top: 8px solid var(--ink);
-  position: relative;
-  z-index: 1;
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid var(--fg);
+  position: relative; z-index: 1;
 }
-.pipeline-center {
-  max-width: 320px;
-  margin: 0 auto;
-}
-.pipeline-center .pipeline-node {
-  text-align: center;
-}
+.pipeline-center { max-width: 320px; margin: 0 auto; }
 
-/* ─── MOBILE ─── */
 @media (max-width: 600px) {
-  .pipeline-diagram { padding: 14px 8px 10px; }
+  .article-body { padding: 36px 22px 60px; }
+  .pipeline-diagram { padding: 18px 12px 14px; }
   .pipeline-row { flex-direction: column; }
   .pipeline-lane + .pipeline-lane {
     border-left: none;
-    border-top: 2px solid var(--ink);
-    padding-top: 2px;
-    margin-top: 2px;
+    border-top: 1px solid var(--fg);
+    padding-top: 4px;
+    margin-top: 4px;
   }
-  .pipeline-node { font-size: 9px; padding: 6px 6px; }
-  .pipeline-node.node-input,
-  .pipeline-node.node-output,
-  .pipeline-node.node-product { font-size: 8px; }
-  .pipeline-converge::before { left: 10%; right: 10%; }
 }
 
-/* back link */
 .article-back {
-  padding: 20px 28px;
-}
-
-.article-back a {
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--red);
-  text-decoration: underline;
-}
-
-/* ─── MOBILE ─── */
-@media (max-width: 600px) {
-  .article-header { padding: 22px 18px 0; }
-  .article-body { padding: 24px 18px 28px; max-width: 100%; }
-  .article-body h1 { font-size: 32px; letter-spacing: 1.5px; }
-  .article-body h2 { font-size: 22px; letter-spacing: 1.5px; margin: 22px 0 8px; }
-  .article-body h3 { font-size: 12px; }
-  .article-body p { font-size: 13px; line-height: 1.75; }
-  .article-body li { font-size: 13px; line-height: 1.75; }
-  .article-body pre { padding: 14px 14px; font-size: 10.5px; }
-  .article-body pre code { font-size: 10.5px; line-height: 1.65; }
-  .article-body code { font-size: 10.5px; word-break: break-word; }
-  .article-body blockquote { padding-left: 14px; margin: 16px 0; }
-  .article-body table { font-size: 12px; }
-  .article-back { padding: 16px 18px; }
-}
-
-@media (max-width: 380px) {
-  .article-body { padding: 20px 14px 24px; }
-  .article-body h1 { font-size: 28px; }
+  padding: 22px 30px;
+  border-top: 1px solid var(--fg);
 }
 </style>
 </head>
 <body>
 
-<nav class="site-nav">
-  <a class="nav-logo" href="index.html">UNOSANITY</a>
-  <div class="nav-links">
-    <a href="index.html">Index</a>
-    <a href="projects.html">Projects</a>
-    <a href="case-studies.html" class="active">Work</a>
-    <a href="notes.html">Notes</a>
-  </div>
-</nav>
+<div class="frame">
 
-<main>
-  <div class="article-shell">
-    <div class="article-header">
-      <div class="article-header-row">
-        <span class="article-date">Apr 28, 2026</span>
-        <div class="article-tags">
-          <span class="tag-pill">#content</span>
-          <span class="tag-pill">#automation</span>
-          <span class="tag-pill">#pipeline</span>
-          <span class="tag-pill">#case-study</span>
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">unosanity<em>.</em>uno</a>
+    <div class="nav-links">
+      <a href="index.html">index</a>
+      <a href="projects.html">projects</a>
+      <a href="case-studies.html" class="active">work</a>
+      <a href="notes.html">notes</a>
+    </div>
+    <a class="nav-email" href="https://t.me/kaysane3x6">sanity@unosanity<em>.</em>uno</a>
+  </nav>
+
+  <main>
+
+    <div class="article-shell">
+
+      <div class="article-meta-row">
+        <div class="article-meta-left">
+          <span class="article-date">Apr 28, 2026 · case study</span>
+          <div class="article-tags">
+            <span class="tag-pill">#content</span>
+            <span class="tag-pill">#automation</span>
+            <span class="tag-pill">#pipeline</span>
+            <span class="tag-pill">#case-study</span>
+          </div>
         </div>
+        <a class="article-back-top" href="case-studies.html">← back to work</a>
       </div>
+
+      <div class="article-body" id="article-body"></div>
+
+      <div class="article-back">
+        <a class="ks-link" href="case-studies.html">← back to all work</a>
+      </div>
+
     </div>
-    <div class="article-body" id="article-body"></div>
-    <div class="article-back">
-      <a href="case-studies.html">&larr; back to all work</a>
-    </div>
-  </div>
-</main>
+
+    <footer style="border-top:1px solid var(--fg);padding:16px 30px;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--fg-mute);flex-wrap:wrap;gap:12px;">
+      <span>© MMXXVI · unosanity<em style="font-style:normal;color:var(--bougainvillea)">.</em>uno</span>
+      <a class="ks-link" style="font-size:12px;" href="https://t.me/kaysane3x6" target="_blank" rel="noopener">talk pipelines → telegram</a>
+    </footer>
+  </main>
+</div>
 
 <script>
 const article = `# Case Study Mining From Transcripts
@@ -455,42 +393,39 @@ First run: 4 case-study articles created, each from fragments that would have st
 The transcripts are no longer a graveyard. They're a quarry, and the quarry has a map.`;
 
 const html = marked.parse(article);
-const container = document.getElementById('article-body');
-container.innerHTML = html;
 
-// Inject pipeline diagram
 const pipelineHTML = `
 <div class="pipeline-diagram">
-  <div class="pipeline-diagram-title">FIG. 01 &mdash; three-skill pipeline</div>
+  <div class="pipeline-diagram-title">Fig. 01 — three-skill pipeline</div>
   <div class="pipeline-row">
     <div class="pipeline-lane">
       <div class="pipeline-node node-input">Published library<span class="node-sub">existing articles</span></div>
-      <div class="pipeline-arrow">&darr;</div>
+      <div class="pipeline-arrow">↓</div>
       <div class="pipeline-node node-skill">corpus-audit<span class="node-sub">skill 01</span></div>
-      <div class="pipeline-arrow">&darr;</div>
+      <div class="pipeline-arrow">↓</div>
       <div class="pipeline-node">Strategic map<span class="node-sub">gaps + format opportunities</span></div>
     </div>
     <div class="pipeline-lane">
       <div class="pipeline-node node-input">Lecture transcripts<span class="node-sub">raw archive</span></div>
-      <div class="pipeline-arrow">&darr;</div>
+      <div class="pipeline-arrow">↓</div>
       <div class="pipeline-node node-skill">case-study-miner<span class="node-sub">skill 02</span></div>
-      <div class="pipeline-arrow">&darr;</div>
+      <div class="pipeline-arrow">↓</div>
       <div class="pipeline-node">Fragment registry<span class="node-sub">tiered + cross-referenced</span></div>
     </div>
   </div>
   <div class="pipeline-converge"><div class="pipeline-converge-arrow"></div></div>
   <div class="pipeline-center">
     <div class="pipeline-node node-human">Article mapping<span class="node-sub">human judgment</span></div>
-    <div class="pipeline-arrow">&darr;</div>
+    <div class="pipeline-arrow">↓</div>
     <div class="pipeline-node node-skill">case-create-fragments<span class="node-sub">skill 03</span></div>
-    <div class="pipeline-arrow">&darr;</div>
+    <div class="pipeline-arrow">↓</div>
     <div class="pipeline-node node-output">Publication-ready draft</div>
   </div>
 </div>`;
 
-container.innerHTML = html.replace('%%PIPELINE_DIAGRAM%%', pipelineHTML);
+document.getElementById('article-body').innerHTML = html.replace('%%PIPELINE_DIAGRAM%%', pipelineHTML);
 </script>
 <script src="pixel-trail.js"></script>
-<script>initPixelTrail({ pixelSize: 16, fadeDuration: 1200, color: '#0f0f0f', opacity: 0.9, gooStrength: 4 });</script>
+<script>initPixelTrail({ pixelSize: 14, fadeDuration: 1200, color: '#A8347C', opacity: 0.45, gooStrength: 4 });</script>
 </body>
 </html>

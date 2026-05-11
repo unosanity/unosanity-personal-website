@@ -3,453 +3,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Case Studies — unosanity</title>
+<title>work — unosanity</title>
+<link rel="icon" href="assets/favicon.png">
 <link rel="stylesheet" href="style.css">
-<script src="tweaks-apply.js"></script>
 <style>
-.page-header {
-  padding: 28px 28px 0;
-  border-bottom: 3px solid var(--ink);
-}
-
-.page-header-top {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-header h1 {
-  font-family: var(--display);
-  font-size: clamp(52px, 9vw, 110px);
-  letter-spacing: 4px;
-  line-height: 0.9;
-  transform: rotate(-0.3deg);
-  transform-origin: left;
-}
-
-.page-header-desc {
-  font-size: 11px;
-  color: #888;
-  max-width: 260px;
-  text-align: right;
-  padding-bottom: 6px;
-  line-height: 1.6;
-}
-
 .page-header-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
-  border-top: 1px solid #ccc;
-  margin-top: 10px;
+  padding: 14px 30px;
+  border-bottom: 1px solid var(--fg);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg-mute);
+  flex-wrap: wrap;
+  gap: 12px;
 }
+.page-header-meta .lead { color: var(--fg); font-size: 14px; max-width: 56ch; }
 
-.case-count {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: #999;
-  text-transform: uppercase;
-}
-
-/* ─── FILTER BAR ─── */
 .filter-bar {
-  padding: 12px 28px;
-  border-bottom: 2px solid var(--ink);
+  padding: 14px 30px;
+  border-bottom: 1px solid var(--fg);
   display: flex;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: wrap;
   align-items: center;
 }
-
 .filter-label {
-  font-size: 9px;
-  letter-spacing: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #999;
-  margin-right: 4px;
+  color: var(--fg-mute);
+  margin-right: 8px;
 }
 
-/* ─── GRID ─── */
 .cases-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  border-left: 2px solid var(--ink);
 }
-
-@media (max-width: 700px) { .cases-grid { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .cases-grid { grid-template-columns: 1fr; } }
 
 .case-card {
-  border-right: 2px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
+  position: relative;
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  color: var(--ink);
+  color: var(--fg);
   cursor: pointer;
-  transition: background 0.12s;
-  position: relative;
-  overflow: hidden;
+  transition: background var(--t-base) var(--ease);
+  border-right: 1px solid var(--fg);
+  border-bottom: 1px solid var(--fg);
 }
+.case-card:nth-child(2n) { border-right: none; }
+@media (max-width: 720px) { .case-card { border-right: none; } }
 
-.case-card:hover { background: rgba(0,0,0,0.025); }
-
-/* featured spans full width */
+.case-card:hover { background: var(--bg-frost); }
 .case-card.featured { grid-column: span 2; }
+@media (max-width: 720px) { .case-card.featured { grid-column: span 1; } }
 
-/* cover image area */
 .case-cover {
   width: 100%;
   aspect-ratio: 16 / 7;
-  background: repeating-linear-gradient(
-    -45deg,
-    #ddd9cc,
-    #ddd9cc 2px,
-    #e9e5d8 2px,
-    #e9e5d8 14px
-  );
-  border-bottom: 2px solid var(--ink);
+  background: var(--bg);
+  border-bottom: 1px solid var(--fg);
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .case-card.featured .case-cover { aspect-ratio: 21 / 7; }
 
-.case-card.dark-cover .case-cover {
-  background: repeating-linear-gradient(
-    -45deg,
-    #1a1a1a,
-    #1a1a1a 2px,
-    #111 2px,
-    #111 14px
-  );
+.case-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url(assets/textures/section-title-bg.png) repeat;
+  opacity: 0.7;
 }
 
 .cover-label {
-  font-family: var(--display);
-  font-size: clamp(32px, 5vw, 72px);
-  letter-spacing: 6px;
-  color: rgba(0,0,0,0.08);
-  text-transform: uppercase;
-  pointer-events: none;
+  position: relative;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: clamp(28px, 4.5vw, 56px);
+  letter-spacing: 0.04em;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px var(--bougainvillea);
+  text-transform: lowercase;
   user-select: none;
 }
 
-.case-card.dark-cover .cover-label { color: rgba(255,255,255,0.06); }
-
-/* corner year stamp */
 .cover-year {
   position: absolute;
-  bottom: 10px;
-  right: 14px;
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: rgba(0,0,0,0.3);
-  font-family: var(--mono);
+  bottom: 12px;
+  right: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--fg-mute);
 }
 
-.case-card.dark-cover .cover-year { color: rgba(255,255,255,0.2); }
-
-/* card body */
 .case-body {
-  padding: 22px 24px 20px;
+  padding: 24px 26px 22px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   flex: 1;
 }
 
-.case-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
 .case-client {
-  font-size: 10px;
-  letter-spacing: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #888;
+  color: var(--fg-mute);
 }
 
 .case-title {
-  font-family: var(--display);
-  font-size: clamp(24px, 3vw, 38px);
-  letter-spacing: 2px;
-  line-height: 1.05;
-  margin-top: 2px;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(22px, 2.4vw, 32px);
+  line-height: 1.15;
+  color: var(--fg);
+  transition: color var(--t-base) var(--ease);
 }
+.case-card:hover .case-title { color: var(--bougainvillea); }
 
 .case-desc {
-  font-size: 12px;
-  line-height: 1.7;
-  color: #555;
-  max-width: 540px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--fg-soft);
+  max-width: 60ch;
 }
 
-/* outcome strip */
 .case-outcomes {
   display: flex;
-  gap: 20px;
+  gap: 28px;
   flex-wrap: wrap;
-  padding-top: 12px;
-  border-top: 1px solid #d0ccc0;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in oklab, var(--fg) 25%, var(--bg));
   margin-top: auto;
 }
 
-.outcome-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
+.outcome-item { display: flex; flex-direction: column; gap: 2px; }
 .outcome-value {
-  font-family: var(--display);
+  font-family: var(--font-serif);
+  font-weight: 600;
   font-size: 28px;
-  letter-spacing: 1px;
   line-height: 1;
-  color: var(--red);
+  color: var(--bougainvillea);
 }
-
 .outcome-label {
-  font-size: 9px;
-  letter-spacing: 1.5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #999;
+  color: var(--fg-mute);
 }
 
 .case-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 10px;
+  padding-top: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-
-.case-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-.case-tags .tag-pill { font-size: 8px; color: #888; border-color: #bbb; }
+.case-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.case-tags .tag-pill { font-size: 10px; color: var(--fg-mute); border-color: color-mix(in oklab, var(--fg) 35%, var(--bg)); }
 
 .case-arrow {
-  font-size: 16px;
-  color: #bbb;
-  transition: color 0.1s, transform 0.12s;
+  width: 22px; height: 22px;
+  background: url(assets/icons/link-arrow--big.png) center/22px no-repeat;
+  flex-shrink: 0;
+  transition: transform var(--t-base) var(--ease);
+  filter: grayscale(1) brightness(0.3);
 }
+.case-card:hover .case-arrow { transform: translate(6px, -6px); filter: none; }
 
-.case-card:hover .case-arrow { color: var(--ink); transform: translateX(4px); }
-
-/* hidden */
 .case-card[data-hidden="true"] { display: none; }
 
-/* ─── EMPTY MODAL ─── */
+/* empty modal */
 .empty-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  background: rgba(15,15,15,0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(14, 26, 77, 0.4);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
 }
-
 .empty-modal {
   background: var(--bg);
-  border: 3px solid var(--ink);
-  padding: 44px 48px 40px;
-  max-width: 480px;
+  border: 1px solid var(--fg);
+  padding: 40px 36px;
+  max-width: 460px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 18px;
+  display: flex; flex-direction: column; gap: 18px;
   position: relative;
-  box-shadow: 8px 8px 0 var(--ink);
 }
-
 .empty-modal-title {
-  font-family: var(--display);
-  font-size: clamp(36px, 6vw, 60px);
-  letter-spacing: 3px;
-  line-height: 1;
+  font-family: var(--font-serif); font-weight: 600;
+  font-size: 36px; line-height: 1; color: var(--fg);
 }
-
-.empty-modal-body {
-  font-size: 13px;
-  line-height: 1.75;
-  color: #555;
-}
-
-.empty-modal-links {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 4px;
-}
-
-.empty-modal-links a {
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 8px 16px;
-  border: 2px solid var(--ink);
-  text-decoration: none;
-  transition: background 0.1s, color 0.1s;
-}
-
-.empty-modal-links a:hover { background: var(--ink); color: var(--bg); }
-
+.empty-modal-title em { font-style: normal; color: var(--bougainvillea); }
+.empty-modal-body { font-family: var(--font-mono); font-size: 14px; line-height: 1.65; color: var(--fg-soft); }
+.empty-modal-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
 .empty-modal-dismiss {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #bbb;
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-family: var(--mono);
+  position: absolute; top: 12px; right: 14px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+  color: var(--fg-mute); cursor: pointer; background: none; border: none;
   padding: 4px;
 }
-
-.empty-modal-dismiss:hover { color: var(--ink); }
-
-/* ─── MOBILE ─── */
-@media (max-width: 600px) {
-  .page-header { padding: 22px 18px 0; }
-  .page-header-top { gap: 10px; }
-  .page-header h1 { font-size: clamp(44px, 13vw, 80px); letter-spacing: 2.5px; }
-  .page-header-desc {
-    font-size: 11px;
-    text-align: left;
-    max-width: 100%;
-    padding-bottom: 4px;
-  }
-  .page-header-meta { flex-wrap: wrap; gap: 6px; padding: 10px 0; }
-  .case-count { font-size: 9px; }
-
-  .filter-bar {
-    padding: 12px 18px;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .filter-bar::-webkit-scrollbar { display: none; }
-  .filter-bar .tag-pill { white-space: nowrap; flex-shrink: 0; }
-
-  .cases-grid { border-left: none; }
-  .case-card.featured { grid-column: span 1; }
-  .case-card.featured .case-cover { aspect-ratio: 16 / 8; }
-  .case-cover { aspect-ratio: 16 / 8; }
-  .cover-label { font-size: clamp(28px, 9vw, 44px); letter-spacing: 4px; }
-
-  .case-body { padding: 18px 16px 16px; gap: 8px; }
-  .case-top { gap: 8px; }
-  .case-title { font-size: 24px; letter-spacing: 1.5px; }
-  .case-desc { font-size: 12px; line-height: 1.65; }
-
-  .case-outcomes { gap: 14px; padding-top: 10px; }
-  .outcome-value { font-size: 22px; }
-
-  .empty-modal {
-    padding: 32px 24px 28px;
-    box-shadow: 6px 6px 0 var(--ink);
-  }
-  .empty-modal-title { font-size: clamp(30px, 10vw, 48px); letter-spacing: 2.5px; }
-  .empty-modal-body { font-size: 12.5px; }
-  .empty-modal-links { width: 100%; }
-  .empty-modal-links a {
-    font-size: 10.5px;
-    padding: 10px 14px;
-    flex: 1;
-    text-align: center;
-    min-width: 130px;
-  }
-}
+.empty-modal-dismiss:hover { color: var(--bougainvillea); }
 </style>
 </head>
 <body>
 
-<nav class="site-nav">
-  <a class="nav-logo" href="index.html">UNOSANITY</a>
-  <div class="nav-links">
-    <a href="index.html">Index</a>
-    <a href="projects.html">Projects</a>
-    <a href="case-studies.html" class="active">Work</a>
-    <a href="notes.html">Notes</a>
-  </div>
-</nav>
+<div class="frame">
 
-<main>
-  <div class="page-header">
-    <div class="page-header-top">
-      <h1>WORK</h1>
-      <p class="page-header-desc">Selected projects done for actual clients for actual money. NDA'd where needed.</p>
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">unosanity<em>.</em>uno</a>
+    <div class="nav-links">
+      <a href="index.html">index</a>
+      <a href="projects.html">projects</a>
+      <a href="case-studies.html" class="active">work</a>
+      <a href="notes.html">notes</a>
     </div>
+    <a class="nav-email" href="https://t.me/kaysane3x6">sanity@unosanity<em>.</em>uno</a>
+  </nav>
+
+  <main>
+
+    <div class="stencil-section">
+      <div class="stencil">work</div>
+    </div>
+
     <div class="page-header-meta">
-      <span class="case-count" id="case-count">— case studies</span>
-      <span style="font-size:10px;color:#999;letter-spacing:1px;">results are real. names sometimes aren't.</span>
+      <span class="lead">Selected projects done for actual clients for actual money. NDA'd where needed. Results are real — names sometimes aren't.</span>
+      <span id="case-count">— case studies</span>
     </div>
-  </div>
 
-  <div class="filter-bar">
-    <span class="filter-label">Filter:</span>
-    <span class="tag-pill active" data-filter="all">All</span>
-    <span class="tag-pill" data-filter="automation">Automation</span>
-    <span class="tag-pill" data-filter="content">Content</span>
-    <span class="tag-pill" data-filter="strategy">Strategy</span>
-    <span class="tag-pill" data-filter="development">Development</span>
-  </div>
+    <div class="filter-bar">
+      <span class="filter-label">Filter</span>
+      <span class="tag-pill active" data-filter="all">all</span>
+      <span class="tag-pill" data-filter="automation">automation</span>
+      <span class="tag-pill" data-filter="content">content</span>
+      <span class="tag-pill" data-filter="strategy">strategy</span>
+      <span class="tag-pill" data-filter="development">development</span>
+    </div>
 
-  <div class="cases-grid" id="cases-grid"></div>
-</main>
+    <div class="cases-grid" id="cases-grid"></div>
 
-<!-- Empty state modal — remove once CASES has entries -->
-<div class="empty-overlay" id="empty-overlay">
+    <footer style="border-top:1px solid var(--fg);padding:16px 30px;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--fg-mute);flex-wrap:wrap;gap:12px;">
+      <span>© MMXXVI · unosanity<em style="font-style:normal;color:var(--bougainvillea)">.</em>uno</span>
+      <a class="ks-link" style="font-size:12px;" href="https://t.me/kaysane3x6" target="_blank" rel="noopener">Want to work with me? → telegram</a>
+    </footer>
+  </main>
+</div>
+
+<!-- Empty modal — only shown if CASES is empty -->
+<div class="empty-overlay" id="empty-overlay" style="display:none;">
   <div class="empty-modal">
     <button class="empty-modal-dismiss" onclick="document.getElementById('empty-overlay').style.display='none'">✕ close</button>
-    <svg width="56" height="56" viewBox="0 0 8 8" style="image-rendering:pixelated;" fill="var(--ink)">
-      <rect x="2" y="1" width="1" height="2"/>
-      <rect x="5" y="1" width="1" height="2"/>
-      <rect x="1" y="5" width="1" height="1"/>
-      <rect x="2" y="6" width="4" height="1"/>
-      <rect x="6" y="5" width="1" height="1"/>
-    </svg>
-    <div class="empty-modal-title">NOTHING<br>HERE YET</div>
-    <p class="empty-modal-body">
-      No case studies up yet. I'm working on writing them up.<br><br>
-      Come back soon, or nudge me directly:
-    </p>
+    <div class="empty-modal-title">nothing<br>here yet<em>.</em></div>
+    <p class="empty-modal-body">No case studies up yet. I'm working on writing them up. Come back soon, or nudge me directly:</p>
     <div class="empty-modal-links">
-      <a href="https://t.me/kaysane3x6" target="_blank">Telegram →</a>
-      <a href="https://instagram.com/unosanity" target="_blank">Instagram →</a>
+      <a class="btn" href="https://t.me/kaysane3x6" target="_blank" rel="noopener"><span class="t">telegram</span></a>
+      <a class="btn" href="https://instagram.com/unosanity" target="_blank" rel="noopener"><span class="t">instagram</span></a>
     </div>
   </div>
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   YOUR CASE STUDIES — edit this array to add/update work
-   Fields:
-     client      : company name (or "Confidential")
-     title       : project title
-     desc        : 1-2 sentence description of what you did
-     tags        : string[] — used for filtering
-     year        : '2025'
-     outcomes    : [{ value: '3×', label: 'faster pipeline' }, ...]
-     link        : URL or '#'
-     featured    : true for full-width card
-     darkCover   : true for dark hatched cover
-═══════════════════════════════════════════════════════ */
 const CASES = [
   {
     client: "Academic",
@@ -460,20 +286,19 @@ const CASES = [
     outcomes: [
       { value: "3", label: "specialized skills" },
       { value: "~10%", label: "case material in transcripts" },
-      { value: "4", label: "articles from first run" },
+      { value: "4", label: "articles, first run" },
       { value: "0%", label: "previously utilized" }
     ],
     link: "case-lecture-pipeline.html",
-    featured: true,
-    darkCover: true
+    featured: true
   }
 ];
 
 function buildCard(cs) {
   const a = document.createElement('a');
-  a.className = 'case-card' + (cs.featured ? ' featured' : '') + (cs.darkCover ? ' dark-cover' : '');
+  a.className = 'case-card' + (cs.featured ? ' featured' : '');
   a.href = cs.link || '#';
-  if (cs.link && cs.link !== '#' && cs.link.includes('://')) a.target = '_blank';
+  if (cs.link && cs.link.includes('://')) { a.target = '_blank'; a.rel = 'noopener'; }
   a.setAttribute('data-type', cs.tags.join(','));
 
   const tagsHtml = cs.tags.map(t => `<span class="tag-pill">#${t}</span>`).join('');
@@ -486,22 +311,17 @@ function buildCard(cs) {
 
   a.innerHTML = `
     <div class="case-cover">
-      <span class="cover-label">${cs.client}</span>
+      <span class="cover-label">${cs.client.toLowerCase()}</span>
       <span class="cover-year">${cs.year}</span>
     </div>
     <div class="case-body">
-      <div class="case-top">
-        <div>
-          <div class="case-client">${cs.client}</div>
-          <div class="case-title">${cs.title}</div>
-        </div>
-        <span class="type-badge type-${cs.tags[0]}">${cs.tags[0]}</span>
-      </div>
+      <div class="case-client">${cs.client}</div>
+      <div class="case-title">${cs.title}</div>
       <p class="case-desc">${cs.desc}</p>
       ${outcomesHtml ? `<div class="case-outcomes">${outcomesHtml}</div>` : ''}
       <div class="case-footer">
         <div class="case-tags">${tagsHtml}</div>
-        <span class="case-arrow">→</span>
+        <span class="case-arrow" aria-hidden="true"></span>
       </div>
     </div>
   `;
@@ -510,14 +330,9 @@ function buildCard(cs) {
 
 const grid = document.getElementById('cases-grid');
 CASES.forEach(cs => grid.appendChild(buildCard(cs)));
-document.getElementById('case-count').textContent = `${CASES.length} case studies`;
+document.getElementById('case-count').textContent = `${CASES.length} case stud${CASES.length === 1 ? 'y' : 'ies'}`;
+if (CASES.length === 0) document.getElementById('empty-overlay').style.display = 'flex';
 
-// hide modal if there are real entries
-if (CASES.length > 0) {
-  document.getElementById('empty-overlay').style.display = 'none';
-}
-
-// filter
 document.querySelectorAll('[data-filter]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
@@ -528,11 +343,11 @@ document.querySelectorAll('[data-filter]').forEach(btn => {
       card.setAttribute('data-hidden', show ? 'false' : 'true');
     });
     const visible = [...document.querySelectorAll('.case-card')].filter(c => c.dataset.hidden !== 'true').length;
-    document.getElementById('case-count').textContent = `${visible} case studies`;
+    document.getElementById('case-count').textContent = `${visible} case stud${visible === 1 ? 'y' : 'ies'}`;
   });
 });
 </script>
 <script src="pixel-trail.js"></script>
-<script>initPixelTrail({ pixelSize: 16, fadeDuration: 1200, color: '#0f0f0f', opacity: 0.9, gooStrength: 4 });</script>
+<script>initPixelTrail({ pixelSize: 14, fadeDuration: 1200, color: '#A8347C', opacity: 0.45, gooStrength: 4 });</script>
 </body>
 </html>
