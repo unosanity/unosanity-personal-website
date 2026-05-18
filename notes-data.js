@@ -1,5 +1,213 @@
 const NOTES = [
   {
+    id: 'dopamine-entitlement-backwards-law',
+    date: '2026-05-18',
+    title: 'Dopamine, Entitlement, and the Backwards Law',
+    tags: ['psychology', 'philosophy', 'dopamine', 'happiness'],
+    body: `# Dopamine, Entitlement, and the Backwards Law
+
+I have a confession: I am a repeat offender when it comes to falling into dopamine holes. You know the spiral — one “just five minutes” of a feed turns into an hour, then you feel like garbage, then you chase something else to feel better, which makes you feel worse. Rinse, repeat.
+
+So recently I went on a bit of a binge. Not the dopamine kind — the research kind. I was reading up on how people actually get out of these loops, watching videos, talking to friends, and trying to understand why the obvious advice — “just do less of the bad thing” — almost never works.
+
+The answer I keep coming back to is annoying because it is not tactical. The dopamine hole is not mainly a willpower problem. It is a values problem. You do not escape the loop by optimizing your mood harder. You escape it by changing the question you are asking.
+
+A long conversation with a friend over the weekend made this click. We were talking about productivity hacks, mood-boosting apps, screen limits, and all the other tools people use when they are stuck. None of them are useless. But most of them fail when they are trying to solve the wrong problem. This essay is the longer version of that realization.
+
+---
+
+## The Wrong Question
+
+The obvious question is: “How do I feel better?”
+
+The problem is that chasing happiness directly tends to backfire. The more aggressively you pursue a positive experience, the more the pursuit itself becomes a negative experience. This is what Alan Watts called the Backwards Law, and Mark Manson has done a good job of translating it into modern terms.
+
+- The more you try to impress people, the less impressive you feel.
+- The more beautiful you want to be, the uglier you see yourself.
+- The more money you want, the poorer you feel.
+- The more love you think you need, the lonelier you become.
+- The more you try to be happy all the time, the more easily you are upset.
+
+The mechanism is simple: chasing implies lack. When you chase happiness, you keep signaling to yourself that you do not have it. That signal generates anxiety, inadequacy, and frustration — the very states you are trying to escape.
+
+\`\`\`mermaid
+flowchart LR
+    A["Chase happiness"] --> B["Signal: I lack happiness"]
+    B --> C["Anxiety / inadequacy"]
+    C --> D["Feel worse"]
+    D --> A
+\`\`\`
+
+The practical flip is to stop asking “What will make me happy?” and start asking “What am I willing to struggle for?” or “What pain do I secretly enjoy?” Those questions point away from mood optimization and toward meaning.
+
+That is the whole through-line of this note: dopamine loops survive because they offer a cheap answer to the wrong question.
+
+---
+
+## Two Kinds of Happy
+
+Part of the confusion is that modern culture has collapsed two different kinds of happiness into one indistinguishable blob.
+
+**Hedonia** is pleasure, comfort, and short-term satisfaction. Dopamine hits, convenience, novelty, relief, feeling good right now. Modern life is optimized for this: personalized feeds, instant delivery, frictionless entertainment, comfort-first design.
+
+**Eudaimonia** is purpose-driven, meaningful living. It is the sense that your life is worth living, that your struggles are worth the trouble, and that you are becoming someone you can respect. It is not a feeling you chase directly. It is a byproduct of committing to something meaningful.
+
+The trap is that chasing hedonia feels like pursuing happiness, but it runs on a treadmill. Each hit fades, so the next hit has to be bigger, faster, stranger, or more personalized. Eudaimonia is slower to build, but it is more stable because it is anchored to values, not stimuli.
+
+\`\`\`mermaid
+flowchart TB
+    subgraph Hedonia["Hedonia — The Treadmill"]
+        H1["Dopamine hit"] --> H2["Need bigger hit"]
+        H2 --> H3["Still unsatisfied"]
+        H3 --> H1
+    end
+
+    subgraph Eudaimonia["Eudaimonia — The Compass"]
+        E1["Commit to values"] --> E2["Meaningful struggle"]
+        E2 --> E3["Sustainable satisfaction"]
+        E3 --> E1
+    end
+\`\`\`
+
+Most dopamine holes are hedonia traps. You are not necessarily lacking a better app, a stricter routine, or a more optimized system. You are overdosing on short-term pleasure and calling it happiness.
+
+This also explains why dopamine loops so easily turn into self-absorption. If the goal is always to feel better, then the world starts to look like a machine that exists to regulate your mood.
+
+---
+
+## Entitlement: The Self-Absorption Engine
+
+Two forces make that self-absorption worse:
+
+1. **Well-intentioned parenting** — telling children they are uniquely special and deserving of everything can create entitlement instead of real self-esteem.
+2. **Internet hyper-personalization** — algorithms and ads constantly reinforce the message that the world should adapt to your preferences.
+
+Entitlement turns the Backwards Law into a personality structure. Instead of “I want to feel better,” it becomes “The world owes me the feeling I want.” That is where narcissism enters the picture.
+
+There are two useful flavors to distinguish:
+
+| Flavor | Core belief | What they demand |
+|--------|-------------|------------------|
+| **Grandiose** | I am better than everyone and deserve special treatment. | Pay attention to me because I am great. |
+| **Vulnerable** | I am uniquely victimized and life has been unfair to me. | Pay attention to me because I have suffered. |
+
+Despite opposite self-narratives, both demand the same thing from the world: *everyone should stop and pay attention to me.*
+
+\`\`\`mermaid
+flowchart LR
+    A["Entitlement"] --> B["Grandiose narcissism"]
+    A --> C["Vulnerable narcissism"]
+    B --> D["I deserve attention because I am great"]
+    C --> E["I deserve attention because I have suffered"]
+    D --> F["Same demand: stop and notice me"]
+    E --> F
+\`\`\`
+
+The vulnerable flavor is especially relevant to modern discourse because it can hide behind legitimate grievances. Real suffering exists. Structural unfairness exists. But a true grievance can still become psychologically corrosive when it becomes an identity built around attention, exemption, and permanent moral leverage.
+
+This is the bridge from dopamine to entitlement: when comfort becomes the highest value, discomfort starts to feel like injustice.
+
+---
+
+## Why We Stay Stuck: Transactional Maturity
+
+Manson distills developmental psychology into three stages. It is reductive, but useful:
+
+| Stage | Core question | Behavior |
+|-------|---------------|----------|
+| **Childhood** | “Do I get the thing I want?” | Pure desire and outcome focus. Wants cookie → reaches for cookie. |
+| **Adolescence** | “What do I need to do to get the thing?” | Transactional, performative, bartering for approval and status. |
+| **Adulthood** | “What matters more than the cookie?” | Unconditional. Plants a flag: “This is who I am. Take it or leave it.” |
+
+\`\`\`mermaid
+flowchart TB
+    C["Childhood<br/>'Do I get the cookie?'"] --> A["Adolescence<br/>'What do I do to get the cookie?'"]
+    A --> Ad["Adulthood<br/>'What matters more than the cookie?'"]
+    A -.->|"The trap: many never leave"| A
+\`\`\`
+
+The trap is that modern life gives us endless opportunities to remain adolescent. Social media is basically a global engine for adolescent behavior: perform, measure approval, adjust performance, repeat.
+
+This is not separate from the dopamine problem. It is the social version of the same loop. A feed gives you hedonia. An audience gives you status. Both train you to keep asking: “What do I need to do to get the hit?”
+
+If you never let your performance fail enough times to discover what you actually stand for, you stay stuck bartering for cookies forever.
+
+---
+
+## Anti-Fragility Through Virtue
+
+The adult mindset is anti-fragile in the Nassim Taleb sense: it gains from disorder rather than merely surviving it.
+
+**Conditional living** is fragile. Your behavior changes based on who is watching. Your self-worth is tied to approval, status, comfort, and outcomes. One rejection, one failure, one shift in social dynamics, and the structure starts to collapse.
+
+**Unconditional living** is anti-fragile. Your values are practiced when people love you and when they hate you, when you are broke and when you are rich, when things go well and when things are a dumpster fire. Hardship clarifies commitment. Rejection filters for the right people instead of destroying self-worth.
+
+\`\`\`mermaid
+flowchart LR
+    subgraph Conditional["Conditional Living — Fragile"]
+        C1["Approval-seeking"] --> C2["Performance"]
+        C2 --> C3["Rejection"]
+        C3 --> C4["Collapse"]
+    end
+
+    subgraph Unconditional["Unconditional Living — Anti-Fragile"]
+        U1["Values-driven"] --> U2["Hardship"]
+        U2 --> U3["Clarified commitment"]
+        U3 --> U4["Stronger than before"]
+    end
+\`\`\`
+
+Manson notes that after diving deep into modern psychology, he “just found Aristotle” at the bottom — basic virtue ethics that has been available for the entirety of Western history. The modern rabbit hole leads straight back to the ancient answer.
+
+That is not disappointing. It is clarifying. The way out is not a newer hack. It is an older standard.
+
+---
+
+## What Actually Works
+
+Conventional self-help techniques — affirmations, visualizations, gratitude practices — can help, but they often work best for people who already feel relatively stable. For someone who feels terrible, mirror affirmations can backfire: they mostly remind you that you are the kind of person who needs to stand in front of a mirror reciting lines.
+
+The real answer is less romantic and more structural:
+
+1. **Pursue virtue, not happiness.** Value things that remain good even when they are uncomfortable: honesty, courage, discipline, generosity, craft, loyalty, responsibility. Do not build your life around temporary highs that create more suffering than they relieve.
+
+2. **Find your “secretly enjoyed pain.”** The question “What pain do I secretly enjoy?” is a strong diagnostic for purpose. If a struggle feels meaningful even while it is hard, you have found a compass.
+
+3. **Let performance fail.** You cannot discover what you actually stand for if you are constantly adjusting to avoid disapproval. At some point you have to plant a flag and let people react.
+
+4. **Practice unconditional values.** Behave consistently when no one is watching. Behave consistently when people dislike you. This is the only source of genuine anti-fragility.
+
+None of this means pleasure is bad. Pleasure is fine as a byproduct, a rest stop, or a reward. It just cannot be the operating system.
+
+---
+
+## Bottom Line
+
+I did not write this because I have figured it out. I wrote it because I am tired of forgetting it.
+
+The dopamine hole is not a willpower problem. It is a values problem. You do not escape the loop by trying harder to feel good. You escape it by deciding what matters enough to feel bad for.
+
+\`\`\`mermaid
+flowchart TB
+    A["Dopamine hole"] --> B["Wrong question:<br/>How do I feel better?"]
+    B --> C["Chase hedonia → treadmill"]
+    C --> D["Comfort becomes highest value"]
+    D --> E["Discomfort feels like injustice"]
+    E --> F["Entitlement / self-absorption"]
+    F --> G["Perform for approval"]
+    G --> H["Stay adolescent → fragile"]
+    H --> A
+
+    A --> I["Right question:<br/>What am I willing to struggle for?"]
+    I --> J["Find eudaimonia → compass"]
+    J --> K["Practice unconditional values"]
+    K --> L["Anti-fragile adulthood"]
+    L --> M["Sustainable satisfaction"]
+\`\`\`
+
+If this sounds like something you already knew but needed to hear again — that is the point. The answer was never hidden. It was just buried under optimization for comfort.`
+  },
+  {
     id: 'ghostwrite-for-your-authors',
     date: '2026-05-08',
     title: 'Why you should ghostwrite for your authors as a content person',
