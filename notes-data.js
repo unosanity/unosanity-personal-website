@@ -1,5 +1,34 @@
 const NOTES = [
   {
+    id: 'ai-cost-vs-human',
+    date: '2026-05-19',
+    title: 'What the fuck are you people spending your AI budget on?',
+    tags: ['AI', 'cost', 'tokens', 'opinion'],
+    body: `# What the fuck are you people spending your AI budget on?
+
+An Nvidia exec recently said that compute costs have gotten so high, it's now cheaper to onboard a new employee than to keep paying for AI. And my first thought was: what exactly are you doing with those tokens?
+
+Because I just tallied up my own AI spend, and the number doesn't make sense next to that claim.
+
+My personal stack — the one that runs this website, manages my side projects, handles my CV, and powers a non-trivial chunk of my full-time job at Projector — costs me about $250 a month. Maybe $350 if you count what Projector spends on my tokens. That's it. For everything.
+
+That's part-time money. And yet this "part-timer" manages the site you're reading, runs my automations, handles tasks that would have taken a human multiple weeks, and does it in days.
+
+My stack is cheap. Claude Pro at $20. Codex at $20. Kimi K2.6 is the only splurge at roughly $40 a month, and that's only because I pay yearly — it's the best price-per-token deal on the market right now. Also, agent swarm on Kimi is genuinely amazing. I'll probably write about that separately.
+
+So here's what perplexes me: I burn through billions of tokens on complex coding tasks. I use the heavy agents. I don't hold back. And I still spend less than a part-time salary for an entire operational layer of my life.
+
+Which means the people spending *more than a full employee* on AI aren't just using it. They're using it wrong. Unoptimized prompts, redundant calls, no caching, no tiering, probably paying API rates for things that come free on a Pro plan.
+
+Just Hekate (my [Hermes Agent](https://hermes-agent.nousresearch.com/)) alone burned **140 million tokens in the last 7 days**. And that's just one agent. That's not counting everything else I run.
+
+The thesis is simple: AI is not expensive. *Unoptimized* AI is expensive. If your compute bill just crossed the cost of hiring a human, the problem is not the technology.
+
+I run my entire digital life on the cheapest plans possible. The value I get back is absurd. The fact that others are paying more than a full salary for the same tooling — and presumably getting less — is what keeps me up at night.
+
+Not because I'm worried about the costs. Because I'm worried about the judgment.`
+  },
+  {
     id: 'dopamine-entitlement-backwards-law',
     date: '2026-05-18',
     title: 'Dopamine, Entitlement, and the Backwards Law',
