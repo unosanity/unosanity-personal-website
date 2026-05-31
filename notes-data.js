@@ -1,5 +1,113 @@
 const NOTES = [
   {
+    id: 'ai-technical-part-not-valuable-part',
+    date: '2026-05-31',
+    title: 'If AI can do the technical part of your art, maybe that was never the valuable part',
+    tags: ['AI', 'creativity', 'taste', 'opinion'],
+    body: `# If AI can do the technical part of your art, maybe that was never the valuable part
+
+I've been noticing that a lot of anti-AI sentiment, especially from indie and creative circles, keeps orbiting the same few arguments. AI is stealing intellectual property. AI is sloppifying culture. AI is frying the planet. AI is making hardware worse and more expensive for everyone else.
+
+Some of that is true. Some of it is half-true. A lot of it is just people panicking because the part of their craft they thought was defensible turns out to be reproducible.
+
+## The IP argument is real, but not in the way people want it to be
+
+Yes, AI is trained on other people's work. Yes, that is a grey zone. Yes, a lot of artists never got asked and never got paid. I don't think that's fake outrage. I think it's a legitimate complaint.
+
+What I don't buy is the almost spiritual framing of it, where people act like the machine is doing something fundamentally alien to how humans learn.
+
+You got your taste from somewhere. You got your skills from somewhere. You got your techniques from somewhere. Nobody wakes up with fully formed style downloaded from God. You copied people. You studied people. You stole with your eyes in the socially acceptable way we call “learning.”
+
+That doesn't automatically make AI training morally clean. It doesn't. But it does make the argument messier than people want it to be.
+
+The real loss is not that style has become “stolen.” It's that style has become cheap to imitate.
+
+And that sucks if what you were actually selling was imitation.
+
+## If AI can replace you, it probably replaced the technical part first
+
+This is the part people really don't want to hear.
+
+If Suno can make better music than you, or Midjourney can make better images than you, or a language model can produce cleaner copy than you, then the technical layer of your work was never enough. That's not cruelty. That's competition.
+
+I'm a writer. Writing is the thing I've done most of my life. And I actively moved from “writing manually” to “writing with AI” because, frankly, AI is very good at words. Sometimes better than me at grammar. Sometimes faster than me at structure. Definitely less precious than me about first drafts.
+
+And yet I still get paid to write.
+
+Why? Because the valuable part was never just putting words on a page. It was judgment. Taste. Wordplay. Knowing what belongs, what doesn't, what tone survives, what idea is worth pushing further, what sentence is doing too much, what angle is dead on arrival.
+
+If all you had was the technicality, then yes, you're in trouble. But that was always going to happen eventually. AI just sped the timeline up and made it obvious.
+
+People would rather moralize the machine than admit they were only competitive at the execution layer.
+
+## The environmental argument is fair. It still doesn't settle it.
+
+AI harms the planet. Fine. True. So do a lot of things we tolerate because the upside is considered worth it.
+
+Plastic harms the planet. Oil harms the planet. Industrial agriculture harms the planet. Cloud storage harms the planet. Global shipping harms the planet. Cheap fast convenience in every form has a cost attached to it, and we've been making those trade-offs for a long time.
+
+So I don't really find “it uses a lot of power” to be a uniquely damning argument on its own.
+
+The actual question is whether the benefit is worth the damage.
+
+In the case of AI, I think the answer is obviously yes — with the giant asterisk that we should still reduce the damage wherever possible.
+
+AI lets me do things I had the taste for but not the technical ability for. I can build tools I wouldn't have been able to build. I can code things I mostly understand conceptually but couldn't execute alone at the same speed. I can classify messy information, find patterns faster, turn emails into actual tasks, and generally convert judgment into output with way less friction.
+
+That is not fake value. That is real value. It changes what one person can do.
+
+So yes, fix the energy problem. Fix the waste. Fix the incentives. But don't act like the existence of externality automatically invalidates the tool. If that were the standard, half of modern civilization would have to go with it.
+
+## A lot of the other complaints are just bottleneck problems
+
+Consumer hardware getting worse or more expensive? Also fair.
+
+But that's not some eternal AI curse. That's an industry bottleneck.
+
+Why is there basically one company making the lithography machines everyone depends on? Why are advanced chip fabs concentrated in such a tiny number of places? Why are we acting surprised that a sudden planetary arms race for compute would distort supply?
+
+Of course it did.
+
+That doesn't mean AI uniquely broke computing. It means computing was already heading toward centralization, cloud dependency, and scarce high-end hardware, and AI poured gasoline on it.
+
+The market will adjust. Slowly, probably annoyingly, but it will.
+
+## The part that matters is that AI is already useful at civilization scale
+
+This is where I lose patience with the full anti-AI posture.
+
+AI is already doing useful work. It's helping with medicine. It's helping with protein folding. It's finding software vulnerabilities that sat unnoticed for years. It's making entire categories of technical leverage available to people who previously only had ideas and taste, but not execution.
+
+That's not a toy. That's not a gimmick. That's not just “slop.”
+
+So when people reduce AI to stolen JPEGs and annoying LinkedIn guys, they are reacting to the most embarrassing layer of the phenomenon, not the important one.
+
+It's like judging electricity by crypto miners.
+
+## Bottom line
+
+I do think AI has real costs.
+
+I do think the training-data ethics are murky.
+I do think the environmental burden is real.
+I do think hardware concentration and compute scarcity are ugly.
+I do think a lot of corporations will use AI in the dumbest possible way.
+
+But I also think a lot of anti-AI sentiment is just displaced grief from people realizing that technical skill, on its own, is no longer enough.
+
+And honestly? It was never enough.
+
+The part that survives is taste. Judgment. Point of view. Knowing what should exist in the first place.
+
+If the machine can do the bare technicalities of your art and that destroys your value, then the market wasn't paying you for soul. It was paying you for labor.
+
+That's a much more painful realization than “AI bad,” so naturally most people don't want to have it.
+
+I get it.
+
+I just don't think pretending otherwise changes where this is going.`
+  },
+  {
     id: 'ai-cost-vs-human',
     date: '2026-05-19',
     title: 'What the fuck are you people spending your AI budget on?',
